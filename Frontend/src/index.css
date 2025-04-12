@@ -1,0 +1,23 @@
+@import "tailwindcss";
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari */
+}
+@keyframes loading-bar {
+  0% {
+    /* left: 10%; */
+    width: 1%;
+  }
+  
+  100% {
+    /* left: 100%; */
+    width: 100%;
+  }
+}
+
+.loading-bar {
+  position: absolute;
+  top: 0;
+  height: 4px;
+  background-color: #272828; /* Google blue */
+  animation: loading-bar 2s ;
+}
