@@ -21,7 +21,7 @@ const usersignup = async (req, res) => {
       password,
     });
     const token = user.generatetoken();
-    res.status(200).json({ message: "user signup successfully",token ,user });
+    res.status(200).json({ message: "user signup successfully", token, user });
     console.log("user signup created successfully");
   } catch (error) {
     res.status(201).json({ messge: "usersignup error", error });
@@ -39,17 +39,16 @@ const userlogin = async (req, res) => {
     const cheakpassword = await user.comparepassword(password);
     if (!cheakpassword)
       return res.status(201).json({ message: "password is not valid" });
-       
+
     const token = user.generatetoken();
     // admin verifications
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      
       res.status(200).json({
         message: "Admin login successful",
         role: "admin",
-        token:token,
+        token: token,
       });
-      
+
       return;
     }
     res.cookie("token", token, {
@@ -59,7 +58,9 @@ const userlogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 10 * 1000, // 7 days expiration
     });
 
-    res.status(200).json({ message: "user login successfull",role: "user" , token });
+    res
+      .status(200)
+      .json({ message: "user login successfull", role: "user", token });
     console.log("user login successfull");
   } catch (error) {
     res.status(201).json({ message: "userlogin error", error });
@@ -76,4 +77,65 @@ const userlogout = (req, res) => {
   res.status(200).json({ message: "User logged out successfully" });
 };
 
-module.exports = { usersignup, userlogin, userlogout };
+const adduseraddress = async (req, res) => {
+  const userid = req.user.id;
+  const { fullName, phone, address, city, state, pincode } = req.body;
+  try {
+    let user = await Usermodel.findOne({ _id: userid });
+    if(!user)return res.status(401).json({message:"user not found"})
+      // user.address = []  
+    user.address.push({fullName,phone,address,city,state,pincode})
+    await user.save()
+    res.status(200).json({message:"this is user" , user})
+  } catch (error) {
+    res.status(401).json({ message: "adduseraddress error", error });
+    console.log("add user address error", error);
+  }
+};
+
+const getuser = async(req,res)=>{
+  const userid = req.user.id;
+  try {
+    let user = await Usermodel.findOne({ _id: userid });
+    if(!user)return res.json({message:"login first"})
+    res.status(200).json({message:"this is user" , user})  
+  } catch (error) {
+    res.status(401).json({message:"getuseraddress error" , error});
+    console.log("getuseraddress error" , error)
+  }
+}
+
+
+const edituseraddress = async (req,res)=>{
+  const userid = req.user.id;
+  const { fullName, phone, address, city, state, pincode } = req.body;
+  const addressid = req.params.id;
+  try {
+    let user = await Usermodel.findOne({ _id: userid });
+    if(!user)return res.status(401).json({message:"user not found"})
+      user.address = user.address.filter((item)=>item._id.toString() !== addressid)
+    user.address.push({fullName,phone,address, city, state, pincode })
+    await user.save()
+    res.status(200).json({message:"user",user})
+  } catch (error) {
+    res.status(401).json({ message: "edituseraddress error", error });
+    console.log("edituseraddress error", error);
+  }
+}
+
+const deleteaddress = async(req,res)=>{
+  const userid = req.user.id;
+  const addressid = req.params.id;
+  try {
+    const user = await Usermodel.findOne({_id:userid})
+    if(!user)return res.json({message:"user not found"})
+    user.address = user.address.filter((item)=>item._id.toString()!==addressid)  
+    await user.save()
+    res.status(200).json({message:"the address is delted" , user})
+  } catch (error) {
+    res.status(401).json({message:"delete address error" , error});
+    console.log("deleteaddress error" , error)
+  }
+}
+
+module.exports = { usersignup, userlogin, userlogout,adduseraddress,edituseraddress,getuser ,deleteaddress};

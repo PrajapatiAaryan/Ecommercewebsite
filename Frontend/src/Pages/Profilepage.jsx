@@ -55,7 +55,13 @@ const Profilepage = () => {
                     }`} >
                   <FaUser /> Personal Information
                 </NavLink>
-                <NavLink className="flex px-5 py-3 gap-5 items-center border border-gray-100"><FaCube /> My Orders</NavLink>
+                <NavLink  className={({ isActive }) =>
+                    ` rounded-md transition flex px-5 py-4 gap-5 items-center border border-gray-100 ${
+                      isActive
+                        ? "bg-black text-white"
+                        : "border-gray-100 hover:bg-gray-200"
+                    }`
+                  } to={'/profile/myorders'}><FaCube /> My Orders</NavLink>
                 <NavLink
                   to={"/profile/wishlist"}
                   className={({ isActive }) =>

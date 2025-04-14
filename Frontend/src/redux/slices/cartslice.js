@@ -77,6 +77,28 @@ export const decreseqty = createAsyncThunk(
   }
 )
 
+export const clearcart =createAsyncThunk(
+  "cart/clearcart",
+  async (_, rejectWithValue) => {
+    try {
+      let token = localStorage.getItem("token");
+      if (!token) return res.json({message:"plese login first"});
+      const response = await axios.delete(`${APIURL}/cart/clearcart`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // "Content-Type":"application/json"
+        },
+      });
+      console.log("the response for clearcart redux", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 const cartslice = createSlice({
   name: "cart",
   initialState: {
@@ -118,6 +140,12 @@ const cartslice = createSlice({
         state.loading = false;
         toast(action.payload.message)
       })
+      .addCase(clearcart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cart = []; // Clear cart in Redux state
+      })
+      
+      
   },
 });
 

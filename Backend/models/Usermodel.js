@@ -39,14 +39,14 @@ const usermodelschema = new mongoose.Schema(
       type: Date, // ✅ Changed from Number to Date
       default: null,
     },
-    address:{
+    address:[{
      fullName:{type:String},
      phone:{type:Number},
      address:{type:String},
      city:{type:String},
      state:{type:String},
      pincode:{type:String},
-    }
+    }]
   },
   { timestamps: true }
 );

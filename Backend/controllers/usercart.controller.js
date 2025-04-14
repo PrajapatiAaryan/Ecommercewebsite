@@ -3,7 +3,7 @@ const Cart = require("../models/Cartmodel");
 const addtocart = async (req, res) => {
   const { productid, quantity } = req.body;
   const userid = req.user.id;
-  console.log(req.body)
+  // console.log(req.body)
   // console.log({userid,productid, quantity })
   try {
     let cart = await Cart.findOne({ userid });
@@ -85,4 +85,19 @@ const decreseqty = async (req, res) => {
   }
 };
 
-module.exports = { addtocart, getcart, removefromcart, decreseqty };
+const clearcart = async(req,res)=>{
+  const userId = req.user.id;
+  try {
+    const cart = await Cart.findOne({userid:userId});
+    if(!cart) return res.json({message:"cart not found"});
+    cart.items = [];
+    await cart.save()
+    res.status(200).json({message:"your cart is empty now" , cart})
+ 
+  } catch (error) {
+    res.status(401).json({message:"clearcart error" , error})
+    console.log("clear cart error" , error)
+  }
+}
+
+module.exports = { addtocart, getcart, removefromcart, decreseqty ,clearcart};

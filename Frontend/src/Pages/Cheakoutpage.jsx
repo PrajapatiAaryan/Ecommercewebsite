@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaCreditCard,
   FaDrumstickBite,
@@ -19,14 +19,20 @@ import GooglePayQR from "./GooglePayQR ";
 import Paymentgateway from "../payment/Paymentgateway";
 import { useDispatch, useSelector } from "react-redux";
 import { getcart } from "../redux/slices/cartslice";
+import { addaddress, deleteaddress, getuser } from "../redux/slices/authslice";
 
 const Cheakoutpage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const {cart} = useSelector((state)=>state.cart)
-  const [carttotalprice, setcarttotalprice] = useState(() => Number(localStorage.getItem("cartTotal")) || 0);
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
+  const [carttotalprice, setcarttotalprice] = useState(
+    () => Number(localStorage.getItem("cartTotal")) || 0
+  );
+  const targetRef = useRef(null);
   useEffect(() => {
     dispatch(getcart());
+    dispatch(getuser());
   }, []);
   useEffect(() => {
     if (cart.length > 0 && cart[0]?.cart?.items) {
@@ -37,9 +43,64 @@ const Cheakoutpage = () => {
       setcarttotalprice(total);
       localStorage.setItem("cartTotal", total); // Store total in localStorage
     }
-  }, [cart]); 
-  console.log(carttotalprice)
+  }, [cart]);
 
+  // console.log("user data", user?.user?.address);
+  const [addressdata, setaddressdata] = useState({
+    fullName: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+  });
+  const [selectedAddressId, setSelectedAddressId] = useState(
+    localStorage.getItem("selectedAddressId") || ""
+  );
+  const handlechange = (e) => {
+    const { name, value } = e.target;
+    setaddressdata({ ...addressdata, [name]: value });
+  };
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    dispatch(addaddress(addressdata));
+    // console.log(addressdata);
+    setaddressdata({
+      fullName: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      pincode: "",
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleedit = (id) => {
+    targetRef.current.scrollIntoView({ behavior: "smooth" });
+    const address = user?.user?.address.filter(
+      (item) => item._id.toString() === id
+    );
+    setaddressdata({
+      fullName: address[0].fullName,
+      phone: address[0].phone,
+      address: address[0].address,
+      city: address[0].city,
+      state: address[0].state,
+      pincode: address[0].pincode,
+    });
+    dispatch(deleteaddress(id));
+  };
+
+  const handledelete = (id) => {
+    console.log("this is id", id);
+    dispatch(deleteaddress(id));
+  };
+
+  const handleCheckboxChange = (id) => {
+    setSelectedAddressId(id);
+    localStorage.setItem("selectedAddressId", id);
+  };
   return (
     <>
       <Navbar />
@@ -81,66 +142,71 @@ const Cheakoutpage = () => {
                 Obcaecati optio non inventore.
               </p>
             </div>
+            {/* user fetched address */}
             <div className="w-full flex lg:gap-8 gap-2">
-              <div className="border border-gray-200 bg-gray-50 text-black w-1/2 flex flex-col gap-3 px-3 lg:py-2">
-                <h1 className="flex justify-between w-full items-center lg:text-3xl font-semibold px-4 py-2">
-                  Robert Fox{" "}
-                  <input type="checkbox" className="lg:w-6 lg:h-6 accent-black" />
-                </h1>
-                <p className="text-black lg:text-xl px-3 pt-2">
-                  4575 Washingtion Ave ,Manchester ,
-                </p>
-                <h1 className="text-black text-xl px-3 ">Kentucky 39454</h1>
-                <div className="flex px-3 py-2 justify-center lg:gap-10 gap-1">
-                  <button className="flex gap-2 items-center border border-gray-200 bg-gray-100 w-1/2 px-4 py-2 rounded-2xl justify-center">
-                    <FaEdit />
-                    Edit
-                  </button>
-                  <button className="flex gap-2 items-center border border-gray-200 bg-red-100 w-1/2 px-4 py-2 rounded-2xl justify-center">
-                    <span className="material-icons-outlined  text-red-700  hover:bg-gray-200">
-                      delete
-                    </span>
-                    Delete
-                  </button>
+              {user?.user?.address.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="border border-gray-200 bg-gray-50 text-black w-1/2 flex flex-col gap-3 px-3 lg:py-2"
+                >
+                  <h1 className="flex justify-between w-full items-center lg:text-2xl font-semibold px-4 py-2">
+                    {item.fullName}
+                    <input
+                      type="checkbox"
+                      className="lg:w-6 lg:h-6 accent-black"
+                      checked ={selectedAddressId === item._id}
+                      onChange={()=>handleCheckboxChange(item._id)}
+                    />
+                  </h1>
+                  <p className="text-black lg:text-xl px-3 pt-2">
+                    {item.address}
+                  </p>
+                  <h1 className="text-black text-xl px-3 ">
+                    {item.city} ,{item.pincode}
+                  </h1>
+                  <div className="flex px-3 py-2 justify-center lg:gap-10 gap-1">
+                    <button
+                      className="flex gap-2 items-center border border-gray-200 bg-gray-100 w-1/2 px-4 py-2 rounded-2xl justify-center cursor-pointer"
+                      onClick={() => handleedit(item._id)}
+                    >
+                      <FaEdit />
+                      Edit
+                    </button>
+                    <button
+                      className="flex gap-2 items-center border border-gray-200 bg-red-100 w-1/2 px-4 py-2 rounded-2xl justify-center cursor-pointer"
+                      onClick={() => handledelete(item._id)}
+                    >
+                      <span className="material-icons-outlined  text-red-700  hover:bg-gray-200">
+                        delete
+                      </span>
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="border border-gray-200 bg-gray-50 text-black w-1/2 flex flex-col gap-3 px-3 lg:py-2">
-                <h1 className="flex justify-between w-full items-center lg:text-3xl font-semibold px-4 py-2">
-                  Robert Fox{" "}
-                  <input type="checkbox" className="lg:w-6 lg:h-6 accent-black" />
-                </h1>
-                <p className="text-black lg:text-xl px-3 pt-2">
-                  4575 Washingtion Ave ,Manchester ,
-                </p>
-                <h1 className="text-black text-xl px-3 ">Kentucky 39454</h1>
-                <div className="flex px-3 py-2 justify-center lg:gap-10 gap-1">
-                  <button className="flex gap-2 items-center border border-gray-200 bg-gray-100 w-1/2 px-4 py-2 rounded-2xl justify-center">
-                    <FaEdit />
-                    Edit
-                  </button>
-                  <button className="flex gap-2 items-center border border-gray-200 bg-red-100 w-1/2 px-4 py-2 rounded-2xl justify-center">
-                    <span className="material-icons-outlined  text-red-700  hover:bg-gray-200">
-                      delete
-                    </span>
-                    Delete
-                  </button>
-                </div>
-              </div>
-              
+              ))}
             </div>
+
             <div className="py-3">
-              <button className="cursor-pointer flex justify-center items-center px-5 py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl" onClick={()=>{
-                navigate('/payment')
-              }}>
+              <button
+                className="cursor-pointer flex justify-center items-center px-5 py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl"
+                onClick={() => {
+                  navigate("/payment");
+                }}
+              >
                 Deliver Here
               </button>
             </div>
-            <div className="w-full  px-3 py-2">
+
+            {/* user address form */}
+            <div className="w-full  px-3 py-2" ref={targetRef}>
               <form className="flex flex-col gap-4">
                 <div>
                   <label>Name</label>
                   <input
                     type="text"
+                    name="fullName"
+                    value={addressdata.fullName}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
@@ -148,22 +214,19 @@ const Cheakoutpage = () => {
                   <label>Mobile no</label>
                   <input
                     type="text"
+                    name="phone"
+                    value={addressdata.phone}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
                 <div>
-                  <label>
-                    Flat , House no , Building , Company , Apartment
-                  </label>
+                  <label>Enter Your Full address</label>
                   <input
                     type="text"
-                    className="outline-none w-full py-3 px-3 border border-black rounded-xl"
-                  />
-                </div>
-                <div>
-                  <label>Area , Colony , Street , Sector , Village</label>
-                  <input
-                    type="text"
+                    name="address"
+                    value={addressdata.address}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
@@ -171,6 +234,9 @@ const Cheakoutpage = () => {
                   <label>City</label>
                   <input
                     type="text"
+                    name="city"
+                    value={addressdata.city}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
@@ -178,6 +244,9 @@ const Cheakoutpage = () => {
                   <label>Pincode</label>
                   <input
                     type="text"
+                    name="pincode"
+                    value={addressdata.pincode}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
@@ -185,10 +254,16 @@ const Cheakoutpage = () => {
                   <label>State</label>
                   <input
                     type="text"
+                    name="state"
+                    value={addressdata.state}
+                    onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
                 </div>
-                <button className="w-1/2 border-gray-500 bg-black text-white px-3 py-2 flex justify-center items-center rounded-xl">
+                <button
+                  className="w-1/2 border-gray-500 bg-black text-white px-3 py-2 flex justify-center items-center rounded-xl cursor-pointer"
+                  onClick={(e) => handlesubmit(e)}
+                >
                   Add New Address
                 </button>
               </form>

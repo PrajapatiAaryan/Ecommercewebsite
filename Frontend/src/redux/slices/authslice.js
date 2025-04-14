@@ -5,12 +5,12 @@ const APIURL = "http://localhost:4000";
 
 export const usersignup = createAsyncThunk(
   "auth/signup",
-  async (userdata, { rejectedwithvlaue }) => {
+  async (userdata, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${APIURL}/user/signup`, userdata);
       return response.data;
     } catch (error) {
-      return rejectedwithvlaue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -68,6 +68,73 @@ export const resetpassword = createAsyncThunk(
     }
   }
 );
+
+export const addaddress = createAsyncThunk(
+  "auth/addaddress",
+  async (addressdata, { rejectWithValue }) => {
+    try {
+      let token = localStorage.getItem("token");
+      if (!token) return console.log("login first");
+      const response = await axios.post(
+        `${APIURL}/user/addaddress`,
+        addressdata,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            // "Content-Type":"application/json"
+          },
+        }
+      );
+      // console.log("the response for addaddress redux", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getuser = createAsyncThunk(
+  "auth/getuser",
+  async (_, { rejectWithValue }) => {
+    try {
+      let token = localStorage.getItem("token");
+      if (!token) return console.log("login first");
+      const response = await axios.get(`${APIURL}/user/getuser`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // "Content-Type":"application/json"
+        },
+      });
+      // console.log("the response for getuser redux", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteaddress = createAsyncThunk(
+  "auth/deleteaddress",
+  async (id, { rejectWithValue }) => {
+    try {
+      let token = localStorage.getItem("token");
+      if (!token) return console.log("login first");
+      const response = await axios.delete(`${APIURL}/user/deleteaddress/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // "Content-Type":"application/json"
+        },
+      });
+      // console.log("the response for deleteuser redux", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+);
 // intial state
 const initialState = {
   user: null,
@@ -89,12 +156,12 @@ const authslice = createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.isauthenticated = true;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(usersignup.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(userlogin.pending, (state) => {
         state.status = "loading";
@@ -103,18 +170,18 @@ const authslice = createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.isauthenticated = true;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(userlogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(userlogout.fulfilled, (state) => {
         state.user = null;
         state.isauthenticated = false;
         state.status = "idle";
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(forgotpassword.pending, (state) => {
         state.loading = true;
@@ -125,13 +192,13 @@ const authslice = createSlice({
         state.loading = false;
         state.message = action.payload.message; // OTP Sent message
         state.error = null;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(forgotpassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Error message
         state.message = null;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(resetpassword.pending, (state) => {
         state.loading = true;
@@ -142,13 +209,26 @@ const authslice = createSlice({
         state.loading = false;
         state.message = action.payload.message; // OTP Sent message
         state.error = null;
-        toast(action.payload.message)
+        toast(action.payload.message);
       })
       .addCase(resetpassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Error message
         state.message = null;
-        toast(action.payload.message)
+        toast(action.payload.message);
+      })
+      .addCase(addaddress.fulfilled, (state, action) => {
+        state.user = action.payload;
+        console.log(state.user);
+      })
+      .addCase(addaddress.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(getuser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(deleteaddress.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
   },
 });

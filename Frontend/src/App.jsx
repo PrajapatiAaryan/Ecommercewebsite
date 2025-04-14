@@ -23,6 +23,7 @@ import AddProduct from "./admin/Addproduct";
 import Getproduct from "./admin/Getproduct";
 import Paymentmethod from "./Pages/Paymentmethod";
 import Placeorder from "./Pages/Placeorder";
+import Myorder from "./Pages/Myorder";
 function App() {
   return (
     <>
@@ -46,6 +47,7 @@ function App() {
           <Route path="/profile" element={<Profilepage />}>
             <Route index element={<Editprofile />} />
             <Route path="wishlist" element={<Wishlistpage />} />
+            <Route path="myorders" element={<Myorder />} />
           </Route>
 
           

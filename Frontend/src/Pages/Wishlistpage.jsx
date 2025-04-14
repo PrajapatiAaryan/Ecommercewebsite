@@ -41,6 +41,7 @@ const Wishlistpage = () => {
         localStorage.setItem("id", id)
         navigate(`/details`)
       }
+      
   return (
     <>
       <div className="">

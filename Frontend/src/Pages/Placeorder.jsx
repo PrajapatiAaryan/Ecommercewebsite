@@ -18,18 +18,27 @@ import Footer from "../components/Footer";
 import GooglePayQR from "./GooglePayQR ";
 import Paymentgateway from "../payment/Paymentgateway";
 import { useDispatch, useSelector } from "react-redux";
-import { getcart, removecartitems } from "../redux/slices/cartslice";
+import { clearcart, getcart, removecartitems } from "../redux/slices/cartslice";
+import { getuser } from "../redux/slices/authslice";
+import { current } from "@reduxjs/toolkit";
+import { placedorder } from "../redux/slices/orderslice";
+import { toast } from "react-toastify";
 
 const Placeorder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+  const {user} = useSelector((state)=>state.auth)
   const [carttotalprice, setcarttotalprice] = useState(
     () => Number(localStorage.getItem("cartTotal")) || 0
   );
   useEffect(() => {
     dispatch(getcart());
+    dispatch(getuser());
   }, []);
+  let id = localStorage.getItem('selectedAddressId')
+  const [paymentmethod, setpaymentmethod] = useState(localStorage.getItem("paymentmethod")||"Cash on Delivery")
+  const [currentaddress, setcurrentaddress] = useState(null)
   useEffect(() => {
     if (cart.length > 0 && cart[0]?.cart?.items) {
       const total = cart[0].cart.items.reduce(
@@ -40,15 +49,44 @@ const Placeorder = () => {
       localStorage.setItem("cartTotal", total); // Store total in localStorage
     }
   }, [cart]);
-
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const options = ["Cash On Delivery", "Pay Now", "Udhar"];
-  
+  useEffect(() => {
+    if (user?.user?.address && id) {
+      const selected = user.user.address.find((item) => item._id === id);
+      setcurrentaddress(selected);
+    }
+  }, [user, id]);
   const handleremovefromcart = (id)=>{
           dispatch(removecartitems(id))
           window.location.reload()
         }
+
+        const orderItems = cart[0]?.cart?.items?.map(item => ({
+          productId: item.productid._id,
+          quantity: item.quantity,
+          price:item.productid.offerPrice*item.quantity,
+        }));
+        const orderData = {
+          items:orderItems,
+          totalAmount: carttotalprice+5,
+          paymentStatus: paymentmethod==="Cash On Delivery"?"Pending":"Paid",
+          orderStatus: "Placed",
+          shippingAddress: {
+            fullName:currentaddress?.fullName,
+            phone: currentaddress?.phone,
+            address: currentaddress?.address,
+            city: currentaddress?.city,
+            state: currentaddress?.state,
+            pincode: currentaddress?.pincode,
+          }
+        };
+        const handleplaceorder = (e)=>{
+          e.preventDefault()
+          dispatch(placedorder(orderData))
+          dispatch(clearcart())
+          toast("order placed sucessfully🤩")
+          navigate('/')
+        }
+
   return (
     <>
       <Navbar />
@@ -129,10 +167,13 @@ const Placeorder = () => {
                   <h1 className="text-2xl font-bold text-black py-2">Shipping Address</h1>
                   <div className="flex justify-between w-full border border-gray-200 px-3 py-1 rounded-2xl">
                     <div>
-                    <h1 className="text-xl font-bold text-black">Robert Fox</h1>
-                    <p className="text-lg text-gray-700">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque, at.</p>
+                    <h1 className="text-xl font-bold text-black">{currentaddress?.fullName}</h1>
+                    <p className="text-lg text-gray-700">{currentaddress?.address} </p>
+                    <p className="text-lg text-gray-700">{currentaddress?.city},{currentaddress?.pincode} </p>
                     </div>
-                    <FaEdit className="scale-125"/>
+                    <FaEdit className="scale-125 cursor-pointer" onClick={()=>{
+                      navigate('/cheakout')
+                    }}/>
                   </div>
                 </div>
                 <div className="pt-5 ">
@@ -140,9 +181,11 @@ const Placeorder = () => {
                   <div className="flex justify-between w-full border border-gray-200 px-3 py-1 rounded-2xl">
                     <div>
                     <h1 className="text-xl font-bold text-black">Robert Fox</h1>
-                    <p className="text-lg text-gray-700">Cash On Delivery</p>
+                    <p className="text-lg text-gray-700">{paymentmethod}</p>
                     </div>
-                    <FaEdit className="scale-125"/>
+                    <FaEdit className="scale-125 cursor-pointer"  onClick={()=>{
+                      navigate('/payment')
+                    }}/>
                   </div>
                 </div>
               </div>
@@ -174,7 +217,11 @@ const Placeorder = () => {
                 <h1 className="flex justify-between items-center py-2 font-semibold text-2xl border-t border-gray-200">
                   Grand total <span>${carttotalprice + 5}</span>
                 </h1>
-                <Paymentgateway amount={carttotalprice + 5}/>
+                {paymentmethod==="Cash On Delivery"?
+                <button className="flex justify-center items-center px-5 py-3 border border-gray-200 rounded-2xl bg-purple-500 w-full mt-4 cursor-pointer" onClick={(e)=>handleplaceorder(e)}>Place</button>:
+
+                <Paymentgateway amount={carttotalprice + 5} orderData={orderData}/>
+                }
               </div>
             </div>
           </div>

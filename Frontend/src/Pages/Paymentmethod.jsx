@@ -44,7 +44,10 @@ const Paymentmethod = () => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const options = ["Cash On Delivery", "Pay Now", "Udhar"];
-
+  const handlecontinue = () => {
+    localStorage.setItem("paymentmethod", selectedOption);
+    navigate("/placeorder");
+  };
   return (
     <>
       <Navbar />
@@ -117,10 +120,9 @@ const Paymentmethod = () => {
                 </div>
                 <div>
                   <button
-                    className="flex justify-center items-center px-5 py-3 bg-black text-white border border-black rounded-xl text-xl cursor-pointer"
-                    onClick={() => {
-                      navigate("/placeorder");
-                    }}
+                    className={`flex justify-center items-center px-5 py-3  border-black rounded-xl text-xl cursor-pointer ${selectedOption?"bg-black text-white border ":"bg-gray-400 text-black"}`}
+                    onClick={handlecontinue}
+                    disabled={!selectedOption}
                   >
                     Continue
                   </button>

@@ -1,9 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-const Paymentgateway = ({amount}) => {
+import { useDispatch } from 'react-redux'
+import { placedorder } from '../redux/slices/orderslice'
+import { clearcart } from '../redux/slices/cartslice'
+const Paymentgateway = ({amount ,orderData}) => {
+  const dispatch = useDispatch();
   let data = {
-    name:"vikas",
+    name:"vikas", 
     amount:amount,
     number:'9999999999',
     MID: 'MID' + Date.now(),
@@ -17,6 +21,8 @@ const Paymentgateway = ({amount}) => {
 
       console.log(res.data)
       if(res.data.success === true){
+        dispatch(placedorder(orderData))
+        dispatch(clearcart())
         window.location.href = res.data.data.instrumentResponse.redirectInfo.url
       }
 
