@@ -43,8 +43,8 @@ const Profilepage = () => {
                   className="w-12 rounded-full"
                 />
                 <div>
-                  <h1 className="text-lg text-gray-500">Hello👋</h1>
-                  <h1 className="text-xl font-semibold">Virat Kohli</h1>
+                  <h1 className=" text-gray-500 ">Hello👋</h1>
+                  <h1 className="font-semibold ">Virat Kohli</h1>
                 </div>
               </div>
               <ul className="list-none gap-5 text-xl ">

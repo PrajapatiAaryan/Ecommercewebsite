@@ -68,7 +68,7 @@ const Placeorder = () => {
         const orderData = {
           items:orderItems,
           totalAmount: carttotalprice+5,
-          paymentStatus: paymentmethod==="Cash On Delivery"?"Pending":"Paid",
+          paymentStatus: paymentmethod==="Cash On Delivery"||"Udhar"?"Pending":"Paid",
           orderStatus: "Placed",
           shippingAddress: {
             fullName:currentaddress?.fullName,
@@ -200,7 +200,7 @@ const Placeorder = () => {
               </h1>
               <div>
                 <label className="text-sm text-gray-700">
-                  Enter Discountcoupn
+                  Enter Discountcoupen
                 </label>
                 <div className="flex border border-black rounded-xl w-full">
                   <input
@@ -214,10 +214,10 @@ const Placeorder = () => {
                 <h1 className="flex justify-between items-center py-2">
                   Delivery Charge <span>$5</span>
                 </h1>
-                <h1 className="flex justify-between items-center py-2 font-semibold text-2xl border-t border-gray-200">
+                <h1 className="flex justifybetween items-center py-2 font-semibold text-2xl border-t border-gray-200">
                   Grand total <span>${carttotalprice + 5}</span>
-                </h1>
-                {paymentmethod==="Cash On Delivery"?
+                </h1>-
+                {paymentmethod==="Cash On Delivery" ||"Udhar"?
                 <button className="flex justify-center items-center px-5 py-3 border border-gray-200 rounded-2xl bg-purple-500 w-full mt-4 cursor-pointer" onClick={(e)=>handleplaceorder(e)}>Place</button>:
 
                 <Paymentgateway amount={carttotalprice + 5} orderData={orderData}/>

@@ -119,7 +119,7 @@ const productdetail = async(req,res)=>{
     const id = req.params.id;
     const product = await Product.findById(id);
     res.status(200).json({message:"this is the details of this products" , product})
-    console.log("product detail is here")
+    // console.log("product detail is here")
   } catch (error) {
     res.status(201).json({message:"product detail error" , error})
   }

@@ -12,49 +12,64 @@ import {
   removefromwhishlist,
 } from "../redux/slices/whishlistslice";
 import { useNavigate } from "react-router-dom";
+import { getorder } from "../redux/slices/orderslice";
+import axios from "axios";
 
 const Myorder = () => {
   const { whishlist, loading, error } = useSelector((state) => state.whishlist);
+  const { order } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [qty, setqty] = useState(1);
+  const [orderproduct, setorderproduct] = useState([]);
   useEffect(() => {
     dispatch(getwhishlist());
+    dispatch(getorder());
   }, []);
-  console.log(whishlist);
 
-  // useEffect(() => {
-  //   if (whishlist.length > 0 && whishlist[0]?.whishlist?.items) {
-  //     const total = whishlist[0].whishlist.items.reduce(
-  //       (acc, item) => acc + item.productid.offerPrice * item.quantity,
-  //       0
-  //     );
-  //     setcarttotalprice(total);
-  //     localStorage.setItem("cartTotal", total); // Store total in localStorage
-  //   }
-  // }, [whishlist]);
+  useEffect(() => {
+    const fetchAllOrderProducts = async () => {
+      const finalOrders = await Promise.all(
+        order?.order.map(async (ord) => {
+          const itemsWithDetails = await Promise.all(
+            ord.items.map(async (item) => {
+              const response = await axios.get(
+                `http://localhost:4000/product/detailproduct/${item.productId}`
+              );
 
-  const handleaddtocart = async (id, qty) => {
-    console.log(id, qty);
-    dispatch(addtocart({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
-    // setqty(1)
-  };
-  const handleremovefromwhishlist = (id) => {
-    dispatch(removefromwhishlist(id));
-    window.location.reload();
-  };
-  const handleoneproductpage = async (id) => {
-    // console.log(id)
-    localStorage.setItem("id", id);
-    navigate(`/details`);
-  };
-  // whishlist[0]?.whishlist?.items?.map((item ,idx) => (
+              return {
+                productDetails: response.data.product,
+                quantity: item.quantity,
+                price: item.price,
+              };
+            })
+          );
+
+          return {
+            _id: ord._id,
+            orderStatus: ord.orderStatus,
+            paymentStatus: ord.paymentStatus,
+            totalAmount: ord.totalAmount,
+            shippingAddress: ord.shippingAddress,
+            items: itemsWithDetails,
+          };
+        })
+      );
+
+      setorderproduct(finalOrders);
+    };
+
+    fetchAllOrderProducts();
+  }, [order]);
+
+
+
+  
   return (
     <>
-      <div className="flex flex-col gap-7">
-        {whishlist[0]?.whishlist?.items?.map((item, idx) => (
+      <div className="flex flex-col gap-7 h-[70vh] overflow-scroll no-scrollbar">
+        {/* {whishlist[0]?.whishlist?.items?.map((item, idx) => (
           <div key={idx} className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="flex gap-3">
@@ -84,6 +99,39 @@ const Myorder = () => {
                 Delivered
               </h1>
               <p>Your Prodcut Has Been Deliverd</p>
+            </div>
+          </div>
+        ))} */}
+
+        {/* order details */}
+        {orderproduct.map((order) => (
+          <div key={order._id} className="border p-4 mb-5 rounded">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-bold">Order ID: {order._id}</h2>
+              <span className="text-sm text-green-600">
+                {order.orderStatus}
+              </span>
+            </div>
+            <p>Payment Status: {order.paymentStatus}</p>
+            <p>Total: ₹{order.totalAmount}</p>
+
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              {order.items.map((item, idx) => (
+                <div key={idx} className="flex gap-3 border p-3 rounded">
+                  <img
+                    src={item.productDetails.image}
+                    alt={item.productDetails.title}
+                    className="w-20 h-20 object-cover"
+                  />
+                  <div>
+                    <h3 className="font-semibold">
+                      {item.productDetails.title}
+                    </h3>
+                    <p>Qty: {item.quantity}</p>
+                    <p>Price: ₹{item.price}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ))}

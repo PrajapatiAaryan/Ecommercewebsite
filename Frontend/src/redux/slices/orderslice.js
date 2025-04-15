@@ -33,9 +33,8 @@ export const getorder = createAsyncThunk(
     try {
       let token = localStorage.getItem("token");
       if (!token) return console.log("login first");
-      const response = await axios.post(
-        `${APIURL}/order/addtoorder`,
-        orderdata,
+      const response = await axios.get(
+        `${APIURL}/order/getorder`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,14 +42,38 @@ export const getorder = createAsyncThunk(
           },
         }
       );
-      console.log("order is placed i think", response.data);
+      // console.log("all your orders", response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data)
+      return rejectWithValue(error.response.data);
     }
   }
 );
+export const getallorders = createAsyncThunk("order/getallorders" , async(_,{rejectWithValue})=>{
+  try {
+    const response = await axios.get(`${APIURL}/order/getallorders`);
+    return response.data
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+})
 
+export const updateorder = createAsyncThunk("order/updateorder", async({orderId, newStatus},{rejectWithValue})=>{
+  try {
+    const response = await axios.put(`${APIURL}/order/updateorder/${orderId}`,{newStatus});
+    return response.data
+  } catch (error) {
+    return rejectWithValue(error.response.data)
+  }
+})
+export const updatepayment = createAsyncThunk("order/updatepayment", async({orderId, newPaymentStatus},{rejectWithValue})=>{
+  try {
+    const response = await axios.put(`${APIURL}/order/updatepayment/${orderId}`,{newPaymentStatus});
+    return response.data
+  } catch (error) {
+    return rejectWithValue(error.response.data)
+  }
+})
 const initialState = {
   order: null,
   error: null,
@@ -61,9 +84,22 @@ const orderslice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(placedorder.fulfilled, (state, action) => {
-      state.order = action.payload;
-    });
+    builder
+      .addCase(placedorder.fulfilled, (state, action) => {
+        state.order = action.payload;
+      })
+      .addCase(getorder.fulfilled,(state,action)=>{
+        state.order = action.payload
+      })
+      .addCase(getallorders.fulfilled,(state,action)=>{
+        state.order = action.payload
+      })
+      .addCase(updateorder.fulfilled,(state,action)=>{
+        state.order= action.payload
+      })
+      .addCase(updatepayment.fulfilled ,(state,action)=>{
+        state.order = action.payload
+      })
   },
 });
 

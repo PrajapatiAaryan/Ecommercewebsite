@@ -24,6 +24,8 @@ import Getproduct from "./admin/Getproduct";
 import Paymentmethod from "./Pages/Paymentmethod";
 import Placeorder from "./Pages/Placeorder";
 import Myorder from "./Pages/Myorder";
+import Filterproductpage from "./Pages/Filterproductpage";
+import Orderslist from "./admin/Orderslist";
 function App() {
   return (
     <>
@@ -38,6 +40,7 @@ function App() {
           <Route path="/allproducts" element={<Allproduct />} />
           <Route path="/details" element={<Detailedproduct />} />
           <Route path="/search/:word" element={<Searchedproductpage />} />
+          <Route path="/category/:category" element={<Filterproductpage/>}/>
           <Route path="/cart" element={<Cartpage />} />
           <Route path="/cheakout" element={<Cheakoutpage />} />
           <Route path="/payment" element={<Paymentmethod/>}/>
@@ -55,6 +58,7 @@ function App() {
             <Route index element={<h1>Welcome to Admin Dashboard</h1>} />
             <Route path="add-product" element={<AddProduct />} />
             <Route path="products" element={<Getproduct />} />
+            <Route path="order" element={<Orderslist />} />
           </Route>
         </Routes>
       </BrowserRouter>

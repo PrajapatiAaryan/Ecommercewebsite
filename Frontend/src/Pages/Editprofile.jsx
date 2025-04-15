@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { getuser } from "../redux/slices/authslice";
 
 const Editprofile = () => {
+  const dispatch = useDispatch()
+  const {user} = useSelector((state)=>state.auth)
+  useEffect(() => {
+    dispatch(getuser())
+  }, [])
+   console.log("user data" , user?.user)
   return (
     <>
       <div>
         <div className="w-full flex justify-between px-3 py-6">
-          <div className="relative w-40 h-40">
+          <div className="relative md:w-40 md:h-40 w-4">
         <img
           src="/images/u1.jpeg"
           alt="Profile"
@@ -26,8 +34,8 @@ const Editprofile = () => {
               <label className="text-sm">First Name</label>
               <input
                 type="text"
-                className="outline-none border border-black px-4 py-3 text-xl rounded-xl"
-                value={"abc"}
+                className="outline-none border border-black px-4 py-3 text-xl rounded-xl text-black"
+                placeholder={user?.user?.firstName}
               />
             </div>
             <div className="flex flex-col">
@@ -35,7 +43,7 @@ const Editprofile = () => {
               <input
                 type="text"
                 className="outline-none border border-black px-4 py-3 text-xl rounded-xl"
-                value={"xyz"}
+                placeholder={user?.user?.lastName}
               />
             </div>
           </div>
@@ -45,7 +53,7 @@ const Editprofile = () => {
               <input
                 type="number"
                 className="outline-none border border-black px-4 py-3 text-xl rounded-xl"
-                value={987 - 12587459}
+                placeholder={user?.user?.address[0]?.phone}
               />
             </div>
             <div className="flex flex-col">
@@ -53,13 +61,13 @@ const Editprofile = () => {
               <input
                 type="email"
                 className="outline-none border border-black px-4 py-3 text-xl rounded-xl"
-                value={"xyz@gmail.com"}
+                placeholder={user?.user?.email}
               />
             </div>
           </div>
           <div className="flex flex-col ">
             <label className="text-sm">Address</label>
-            <textarea className="outline-none border border-black px-4 py-3 text-xl rounded-xl"></textarea>
+            <textarea className="outline-none border border-black px-4 py-3 text-xl rounded-xl" placeholder={user?.user?.address[0]?.address}></textarea>
           </div>
         </form>
       </div>

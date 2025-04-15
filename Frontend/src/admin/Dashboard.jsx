@@ -34,6 +34,9 @@ const Dashboard = () => {
             <Link to="/admin/add-product" className="cursor-pointer">
               <li className="border-b border-gray-400 px-5 py-3">Add Products</li>
             </Link>
+            <Link to="/admin/order" className="cursor-pointer">
+              <li className="border-b border-gray-400 px-5 py-3">Orders</li>
+            </Link>
           </ol>
         </div>
 

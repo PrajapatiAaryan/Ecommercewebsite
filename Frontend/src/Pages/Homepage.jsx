@@ -205,7 +205,10 @@ const Homepage = () => {
                   <CountdownTimer />
                 </div>
                 <div>
-                  <button className="bg-gray-900 rounded-xl text-white flex justify-center items-center px-7 py-3 border border-gray-50 gap-3">
+                  <button className="bg-gray-900 rounded-xl text-white flex justify-center items-center px-7 py-3 border border-gray-50 gap-3 cursor-pointer" onClick={()=>{
+                    navigate('/allproducts')
+                    window.scrollTo(0,0)
+                  }}>
                     View All Products{" "}
                     <span className="material-icons-outlined">
                       arrow_right_alt

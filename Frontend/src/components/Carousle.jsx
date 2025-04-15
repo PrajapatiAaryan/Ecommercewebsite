@@ -3,18 +3,19 @@ import { Navigation } from "swiper/modules";
 import { useRef } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useNavigate } from "react-router-dom";
 
 const items = [
-  { id: 1, text: "Casual", img: "/images/Casual.png", text2: "Casual Wear" },
-  { id: 2, text: "Ethic", img: "/images/ethic.png", text2: "Ethic Wear" },
-  { id: 3, text: "Western", img: "/images/western.png", text2: "Western Wear" },
-  { id: 4, text: "Kids", img: "/images/kids.png", text2: "Kids Wear" },
-  { id: 5, text: "Casual", img: "/images/western.png", text2: "Ethic Wear" },
+  { id: 1, text: "Casual", img: "/images/Casual.png", text2: "men" },
+  { id: 2, text: "Ethic", img: "/images/ethic.png", text2: "women" },
+  { id: 3, text: "Western", img: "/images/western.png", text2: "men" },
+  { id: 4, text: "Kids", img: "/images/kids.png", text2: "men" },
+  { id: 5, text: "Casual", img: "/images/western.png", text2: "shirt" },
 ];
 
 const Carousel = () => {
   const swiperRef = useRef(null);
-
+ const navigate = useNavigate()
   // Function to go to next slide
   const goNext = () => {
     if (swiperRef.current) {
@@ -70,7 +71,11 @@ const Carousel = () => {
                 alt={item.text}
                 className="h-[45vh] w-full z-10 object-contain"
               />
-              <button className="flex justify-center items-center px-20 py-4 bg-white rounded-xl border border-black text-xl absolute mt-60 z-10">
+              <button className="flex justify-center items-center px-20 py-4 bg-white rounded-xl border border-black text-xl absolute mt-60 z-10 cursor-pointer"
+              onClick={()=>{
+                navigate(`/category/${item.text2}`)
+              }}
+              >
                 {item.text2}
               </button>
             </div>

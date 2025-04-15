@@ -47,4 +47,43 @@ const getorder = async (req, res) => {
 };
 
 
-module.exports = { getorder, addtoorder };
+const getallorder = async(req,res)=>{
+  try {
+    const orders = await Ordermodel.find();
+    res.status(200).json({message:"all orders", orders})
+  } catch (error) {
+    res.status(401).json({message:"get all order error" , error})
+    console.log("get all order error" , error)
+  }
+}
+
+const updateorder = async(req,res)=>{
+  const{orderId} =req.params
+  const {newStatus} = req.body;
+  try {
+   const order = await Ordermodel.findOne({_id:orderId})
+   if(!order)return res.json({message:"no order found"});
+   order.orderStatus = newStatus;
+   order.save()
+   res.status(200).json({message:"order status updated" , order})
+  } catch (error) {
+    res.status(401).json({message:"updateorder error" , error});
+    console.log("update order error" , error)
+  }
+}
+const updatepayment = async(req,res)=>{
+  const{orderId} =req.params
+  const {newPaymentStatus} = req.body;
+  try {
+   const order = await Ordermodel.findOne({_id:orderId})
+   if(!order)return res.json({message:"no order found"});
+   order.paymentStatus = newPaymentStatus;
+   order.save()
+   res.status(200).json({message:"order status updated" , order})
+  } catch (error) {
+    res.status(401).json({message:"update payment error" , error});
+    console.log("update payment error" , error)
+  }
+}
+
+module.exports = { getorder, addtoorder ,getallorder,updateorder ,updatepayment};
