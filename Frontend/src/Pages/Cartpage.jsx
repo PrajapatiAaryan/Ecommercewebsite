@@ -79,7 +79,7 @@ const Cartpage = () => {
                         </div>
                       </div>
                       <div className="flex justify-between w-[40%] ">
-                        <h1>${item.productid.offerPrice}</h1>
+                        <h1>₹{item.productid.offerPrice}</h1>
                         <div className="border border-black text-black px-3 rounded-2xl flex items-center gap-4 h-fit py-2">
                           <h1 className="text-xl cursor-pointer" onClick={()=>handledecreseqty(item.productid._id )}>-</h1>
                           <h1 className="text-xl">{item.quantity}</h1>
@@ -99,7 +99,7 @@ const Cartpage = () => {
           <div className="w-fit border-8  border-white h-fit px-3 shadow-sm shadow-gray-500 flex flex-col items-start">
             <div>
               <h1 className="flex justify-between items-center py-2">
-                Subtotal <span>${carttotalprice}</span>
+                Subtotal <span>₹{carttotalprice}</span>
               </h1>
               <div>
                 <label className="text-sm text-gray-700">Enter Discountcoupn</label>
@@ -113,10 +113,10 @@ const Cartpage = () => {
                   </button>
                 </div>
                 <h1 className="flex justify-between items-center py-2">
-                  Delivery Charge <span>$5</span>
+                  Delivery Charge <span>₹5</span>
                 </h1>
                 <h1 className="flex justify-between items-center py-2">
-                  Grand total <span>${carttotalprice + 5}</span>
+                  Grand total <span>₹{carttotalprice + 5}</span>
                 </h1>
                 <button className="bg-black text-white text-xl flex justify-center items-center px-5 py-2 border border-black rounded-xl w-full cursor-pointer " onClick={()=>handlecheakout()}>
                   Cheakout

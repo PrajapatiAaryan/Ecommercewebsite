@@ -76,9 +76,9 @@ const DetailedProduct = () => {
                 </div>
           
                 <div className="text-2xl font-semibold text-black">
-                  ${detailproduct.offerPrice}{" "}
+                ₹{detailproduct.offerPrice}{" "}
                   <span className="text-gray-500 line-through text-lg">
-                    ${detailproduct.actualPrice}
+                  ₹{detailproduct.actualPrice}
                   </span>
                 </div>
           

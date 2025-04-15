@@ -176,9 +176,9 @@ const Homepage = () => {
                   </h1>
                   <h2 className="text-gray-600">{item.titleDescription}</h2>
                   <h1 className="text-xl font-bold text-black">
-                    ${item.offerPrice}{" "}
+                  ₹{item.offerPrice}{" "}
                     <span className="line-through text-gray-500 text-lg">
-                      ${item.actualPrice}
+                    ₹{item.actualPrice}
                     </span>
                   </h1>
                 </div>

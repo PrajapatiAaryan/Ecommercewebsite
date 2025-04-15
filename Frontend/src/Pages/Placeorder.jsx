@@ -205,8 +205,8 @@ const Placeorder = () => {
                 <div className="flex border border-black rounded-xl w-full">
                   <input
                     type="text"
-                    className="outline-none px-4 py-2 w-[80%]"
-                  />
+                    className="outline-none px-4 py-2 w-[80%] "
+                  /> 
                   <button className="flex justify-center items-center bg-black text-white px-1 py-2 w-[20%] rounded-r-xl">
                     Apply
                   </button>
