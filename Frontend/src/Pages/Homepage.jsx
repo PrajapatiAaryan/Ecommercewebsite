@@ -163,7 +163,7 @@ const Homepage = () => {
                   {/* Add to Cart Button (Visible on Hover) */}
                   <button
                     className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-200"
-                    onClick={()=>handleaddtocart(item._id ,qty)}
+                    onClick={()=>handleoneproductpage(item._id)}
                   >
                     Add to Cart
                   </button>
@@ -190,9 +190,9 @@ const Homepage = () => {
       <section>
         <div className="flex  justify-center items-center  md:px-20 ">
           <div className="flex justify-between items-center lg:flex-row flex-col w-full pt-20 ">
-            <div className="pl-6 flex justify-center items-center  w-1/2 overflow-hidden">
+            <div className="pl-6 flex justify-center items-center  w-1/2 overflow-hidden ">
               <div className="flex flex-col gap-3">
-                <h1 className="text-3xl text-black">Deals of the Month</h1>
+                <h1 className="lg:text-3xl text-black">Deals of the Month</h1>
                 <p className="text-sm text-gray-900">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Aliquam delectus quidem, sab ex maiores magni. Eius enim

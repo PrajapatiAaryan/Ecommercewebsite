@@ -3,14 +3,16 @@ import Navbar from "../components/Navbar";
 import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Filterproductpage from "./Filterproductpage";
+import { addtowhishlist } from "../redux/slices/whishlistslice";
 
-const Searchedproductpage = () => {
-  const { word } = useParams();
+const Filtersubcategorypage = () => {
+  const dispatch = useDispatch()
+  const { category, subcategory } = useParams();
   const { products } = useSelector((state) => state.product);
   const [filterproducts, setfilterproducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [qty, setqty] = useState(1);
   const navigate = useNavigate();
 
   // Filters state
@@ -22,33 +24,22 @@ const Searchedproductpage = () => {
   const [coloropen, setcoloropen] = useState(false);
   const [sizeopen, setsizeopen] = useState(false);
   const [priceRangeOpen, setPriceRangeOpen] = useState(false);
+  const [qty, setqty] = useState(1)
 
   const colors = ["red", "blue", "pink", "gray", "green", "yellow"];
   const sizes = ["s", "m", "l", "xl", "xxl"];
 
-  function normalizeText(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, "") // remove special characters
-      .replace(/\s+/g, " ") // remove extra spaces
-      .trim();
-  }
-
   useEffect(() => {
     let filtered = products;
 
-    // Filter by search text
-    // Inside your filter logic
-    if (word) {
-      const searchWords = normalizeText(word).split(" ");
-
-      filtered = filtered.filter((item) => {
-        const title = normalizeText(item.title);
-
-        return searchWords.every((w) => title.includes(w));
-      });
+    // Filter by category
+    if (category) {
+      filtered = filtered.filter((item) => item.category.toLowerCase() === category.toLowerCase());
     }
-
+    if(subcategory){
+      filtered = filtered.filter((item) => item.subcategory?.toLowerCase() === subcategory.toLowerCase());
+    }
+    
     // Filter by price
     filtered = filtered.filter(
       (item) =>
@@ -72,7 +63,7 @@ const Searchedproductpage = () => {
     }
 
     setfilterproducts(filtered);
-  }, [products, word, priceRange, selectedColors, selectedSizes]);
+  }, [products, category, priceRange, selectedColors, selectedSizes,subcategory]);
   // console.log("this is all products", products);
 
   const handleCheckbox = (value, list, setList) => {
@@ -87,17 +78,16 @@ const Searchedproductpage = () => {
     localStorage.setItem("id", id);
     navigate(`/details`);
   };
-
+  const handleaddtowhishlist = async(id ,qty)=>{
+           dispatch(addtowhishlist({productid:id ,quantity:Number(qty)}))
+           window.location.reload()
+           setqty(1)
+       }  
   const totalPages = 5;
   const changePage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
-  };
-  const handleaddtowhishlist = async (id, qty) => {
-    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
-    setqty(1);
   };
 
   return (
@@ -303,11 +293,11 @@ const Searchedproductpage = () => {
           </div>
         </div>
       </div>
-
+      
       <Feature />
       <Footer />
     </>
   );
 };
 
-export default Searchedproductpage;
+export default Filtersubcategorypage;

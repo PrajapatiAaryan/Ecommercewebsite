@@ -39,6 +39,10 @@ const usermodelschema = new mongoose.Schema(
       type: Date, // ✅ Changed from Number to Date
       default: null,
     },
+    profileimg:{
+      type:String,
+      default:"http://localhost:4000/uploads/userprofile.jpeg"
+    },
     address:[{
      fullName:{type:String},
      phone:{type:Number},

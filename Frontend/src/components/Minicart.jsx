@@ -35,7 +35,7 @@ const Minicart = () => {
   const cartItems = cart[0]?.cart?.items || [];
 
   return (
-    <div className="absolute top-16 right-4 border border-black bg-white text-black h-fit w-[20%] z-10 flex flex-col gap-3 px-3 pb-3">
+    <div className="absolute top-16 lg:right-4 right-0 border border-black bg-white text-black h-fit w-fit z-10 flex flex-col gap-3 px-3 pb-3 ">
       <h1 className="text-lg">
         {cartItems.length > 0
           ? `You have ${cartItems.length} items in your cart`
@@ -44,7 +44,7 @@ const Minicart = () => {
 
       {cartItems.length > 0 ? (
         <>
-          <div className="flex flex-col gap-3 h-[340px] overflow-scroll no-scrollbar">
+          <div className="flex flex-col gap-3 h-fit md:h-[340px] overflow-scroll no-scrollbar">
             {cartItems.map((item, idx) => (
               <div key={idx} className="border-b border-gray-500 flex gap-3">
                 <div className="flex justify-center items-center px-4 py-4 bg-gray-50">

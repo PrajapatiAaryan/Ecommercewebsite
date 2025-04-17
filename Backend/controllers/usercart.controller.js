@@ -1,7 +1,7 @@
 const Cart = require("../models/Cartmodel");
 
 const addtocart = async (req, res) => {
-  const { productid, quantity } = req.body;
+  const { productid, quantity ,size,color } = req.body;
   const userid = req.user.id;
   // console.log(req.body)
   // console.log({userid,productid, quantity })
@@ -17,7 +17,7 @@ const addtocart = async (req, res) => {
     if (existingitem) {
       existingitem.quantity += quantity;
     } else {
-      cart.items.push({ productid, quantity });
+      cart.items.push({ productid, quantity ,size ,color });
     }
     await cart.save();
     res.status(200).json({ messge: "product is added to cart", cart });

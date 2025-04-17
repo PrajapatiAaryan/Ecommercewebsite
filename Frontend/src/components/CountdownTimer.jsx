@@ -47,21 +47,21 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex flex-col items-center justify-center   text-black w-1/2">
-      <div className="flex gap-3 text-2xl">
-        <div className="p-4 bg-white rounded-lg text-center w-24 border border-gray-300">
-          <p className="text-2xl font-bold">{timeLeft.days}</p>
+      <div className="flex gap-3 text-2xl ">
+        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
+          <p className="lg:text-2xl font-bold">{timeLeft.days}</p>
           <p className="text-sm">Days</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center w-24 border border-gray-300">
-          <p className="text-2xl font-bold">{timeLeft.hours}</p>
+        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
+          <p className="lg:text-2xl font-bold">{timeLeft.hours}</p>
           <p className="text-sm">Hours</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center w-24 border border-gray-300">
-          <p className="text-2xl font-bold">{timeLeft.minutes}</p>
+        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
+          <p className="lg:text-2xl font-bold">{timeLeft.minutes}</p>
           <p className="text-sm">Minutes</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center w-24 border border-gray-300">
-          <p className="text-2xl font-bold">{timeLeft.seconds}</p>
+        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
+          <p className="lg:text-2xl font-bold">{timeLeft.seconds}</p>
           <p className="text-sm">Seconds</p>
         </div>
       </div>

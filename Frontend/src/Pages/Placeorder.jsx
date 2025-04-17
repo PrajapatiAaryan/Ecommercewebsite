@@ -28,7 +28,7 @@ const Placeorder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-  const {user} = useSelector((state)=>state.auth)
+  const { user } = useSelector((state) => state.auth);
   const [carttotalprice, setcarttotalprice] = useState(
     () => Number(localStorage.getItem("cartTotal")) || 0
   );
@@ -36,9 +36,11 @@ const Placeorder = () => {
     dispatch(getcart());
     dispatch(getuser());
   }, []);
-  let id = localStorage.getItem('selectedAddressId')
-  const [paymentmethod, setpaymentmethod] = useState(localStorage.getItem("paymentmethod")||"Cash on Delivery")
-  const [currentaddress, setcurrentaddress] = useState(null)
+  let id = localStorage.getItem("selectedAddressId");
+  const [paymentmethod, setpaymentmethod] = useState(
+    localStorage.getItem("paymentmethod") || "Cash on Delivery"
+  );
+  const [currentaddress, setcurrentaddress] = useState(null);
   useEffect(() => {
     if (cart.length > 0 && cart[0]?.cart?.items) {
       const total = cart[0].cart.items.reduce(
@@ -55,37 +57,53 @@ const Placeorder = () => {
       setcurrentaddress(selected);
     }
   }, [user, id]);
-  const handleremovefromcart = (id)=>{
-          dispatch(removecartitems(id))
-          window.location.reload()
-        }
+  const handleremovefromcart = (id) => {
+    dispatch(removecartitems(id));
+    window.location.reload();
+  };
 
-        const orderItems = cart[0]?.cart?.items?.map(item => ({
-          productId: item.productid._id,
-          quantity: item.quantity,
-          price:item.productid.offerPrice*item.quantity,
-        }));
-        const orderData = {
-          items:orderItems,
-          totalAmount: carttotalprice+5,
-          paymentStatus: paymentmethod==="Cash On Delivery"||"Udhar"?"Pending":"Paid",
-          orderStatus: "Placed",
-          shippingAddress: {
-            fullName:currentaddress?.fullName,
-            phone: currentaddress?.phone,
-            address: currentaddress?.address,
-            city: currentaddress?.city,
-            state: currentaddress?.state,
-            pincode: currentaddress?.pincode,
-          }
-        };
-        const handleplaceorder = (e)=>{
-          e.preventDefault()
-          dispatch(placedorder(orderData))
-          dispatch(clearcart())
-          toast("order placed sucessfully🤩")
-          navigate('/')
-        }
+  const orderItems = cart[0]?.cart?.items?.map((item) => ({
+    productId: item.productid._id,
+    quantity: item.quantity,
+    price: item.productid.offerPrice * item.quantity,
+  }));
+  const orderData = {
+    items: orderItems,
+    totalAmount: carttotalprice + 5,
+    paymentStatus:
+      paymentmethod === ("Cash On Delivery" || "Udhar") ? "Pending" : "Paid",
+    orderStatus: "Placed",
+    shippingAddress: {
+      fullName: currentaddress?.fullName,
+      phone: currentaddress?.phone,
+      address: currentaddress?.address,
+      city: currentaddress?.city,
+      state: currentaddress?.state,
+      pincode: currentaddress?.pincode,
+    },
+  };
+  const handleplaceorder = (e) => {
+    e.preventDefault();
+    dispatch(placedorder(orderData));
+    dispatch(clearcart());
+    toast("order placed sucessfully🤩");
+    navigate("/");
+  };
+
+  // handling coupens
+  const [selectedcoupen, setselectedcoupen] = useState("new0");
+  const coupens = {
+    new0: 0,
+    new10: 1 / 10,
+    new20: 2 / 10,
+    new30: 3 / 10,
+    new40: 4 / 10,
+    new50: 5 / 10,
+    new60: 6 / 10,
+    new70: 7 / 10,
+  };
+
+  // console.log((carttotalprice+5)-((carttotalprice+5)*coupens[selectedcoupen]))
 
   return (
     <>
@@ -118,7 +136,7 @@ const Placeorder = () => {
               </div>
             </div>
             <div>
-              <h1 className="text-black font-semibold text-xl py-2">
+              <h1 className="text-black font-semibold text-lg lg:text-xl py-2">
                 Estimated Delivery : 22 april 2025
               </h1>
               <div>
@@ -134,26 +152,16 @@ const Placeorder = () => {
                               className="w-14"
                             />
                             <div className="flex gap-10 items-center w-full">
-                              <div className=" w-[50%]">
-
-                              <h1>{item.productid.title}</h1>
-                              <h6>Size:L</h6>
-                              <h1>Price:${item.productid.offerPrice}</h1>
-                              <h1>
-                              totalprice:${item.productid.offerPrice * item.quantity}
-                            </h1>
+                              <div className="w-full lg:w-[50%]">
+                                <h1>{item.productid.title}</h1>
+                                <h6>Size:{item.size}</h6>
+                                <h1>Price:₹{item.productid.offerPrice}</h1>
+                                <h1>Quantity:{item.quantity}</h1>
+                                <h1>
+                                  totalprice:₹
+                                  {item.productid.offerPrice * item.quantity}
+                                </h1>
                               </div>
-                              <button
-                                className="w-8 text-red-600 cursor-pointer py-4 pr-36"
-                                onClick={() =>
-                                  handleremovefromcart(item.productid._id)
-                                }
-                              >
-                                <span className="material-icons-outlined">
-                                  delete
-                                </span>
-                              </button>
-                              
                             </div>
                           </div>
                         </div>
@@ -164,28 +172,48 @@ const Placeorder = () => {
                   )}
                 </div>
                 <div className="pt-5 ">
-                  <h1 className="text-2xl font-bold text-black py-2">Shipping Address</h1>
+                  <h1 className="text-2xl font-bold text-black py-2">
+                    Shipping Address
+                  </h1>
                   <div className="flex justify-between w-full border border-gray-200 px-3 py-1 rounded-2xl">
                     <div>
-                    <h1 className="text-xl font-bold text-black">{currentaddress?.fullName}</h1>
-                    <p className="text-lg text-gray-700">{currentaddress?.address} </p>
-                    <p className="text-lg text-gray-700">{currentaddress?.city},{currentaddress?.pincode} </p>
+                      <h1 className="text-xl font-bold text-black">
+                        {currentaddress?.fullName}
+                      </h1>
+                      <p className="text-lg text-gray-700">
+                        {currentaddress?.address}{" "}
+                      </p>
+                      <p className="text-lg text-gray-700">
+                        {currentaddress?.city},{currentaddress?.pincode}{" "}
+                      </p>
                     </div>
-                    <FaEdit className="scale-125 cursor-pointer" onClick={()=>{
-                      navigate('/cheakout')
-                    }}/>
+                    <div >
+                      <FaEdit
+                        className="scale-125 cursor-pointer"
+                        onClick={() => {
+                          navigate("/cheakout");
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="pt-5 ">
-                  <h1 className="text-2xl font-bold text-black py-2">Payment Method</h1>
+                  <h1 className="text-2xl font-bold text-black py-2">
+                    Payment Method
+                  </h1>
                   <div className="flex justify-between w-full border border-gray-200 px-3 py-1 rounded-2xl">
                     <div>
-                    <h1 className="text-xl font-bold text-black">Robert Fox</h1>
-                    <p className="text-lg text-gray-700">{paymentmethod}</p>
+                      <h1 className="text-xl font-bold text-black">
+                        {currentaddress?.fullName}
+                      </h1>
+                      <p className="text-lg text-gray-700">{paymentmethod}</p>
                     </div>
-                    <FaEdit className="scale-125 cursor-pointer"  onClick={()=>{
-                      navigate('/payment')
-                    }}/>
+                    <FaEdit
+                      className="scale-125 cursor-pointer"
+                      onClick={() => {
+                        navigate("/payment");
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -202,26 +230,43 @@ const Placeorder = () => {
                 <label className="text-sm text-gray-700">
                   Enter Discountcoupen
                 </label>
-                <div className="flex border border-black rounded-xl w-full">
+                <form className="flex border border-black rounded-xl w-full">
                   <input
                     type="text"
                     className="outline-none px-4 py-2 w-[80%] "
-                  /> 
+                    // value={selectedcoupen}
+                    // onChange={(e)=>setselectedcoupen(e.target.value)}
+                  />
                   <button className="flex justify-center items-center bg-black text-white px-1 py-2 w-[20%] rounded-r-xl">
                     Apply
                   </button>
-                </div>
+                </form>
                 <h1 className="flex justify-between items-center py-2">
                   Delivery Charge <span>$5</span>
                 </h1>
                 <h1 className="flex justifybetween items-center py-2 font-semibold text-2xl border-t border-gray-200">
-                  Grand total <span>${carttotalprice + 5}</span>
-                </h1>-
-                {paymentmethod==="Cash On Delivery" ||"Udhar"?
-                <button className="flex justify-center items-center px-5 py-3 border border-gray-200 rounded-2xl bg-purple-500 w-full mt-4 cursor-pointer" onClick={(e)=>handleplaceorder(e)}>Place</button>:
-
-                <Paymentgateway amount={carttotalprice + 5} orderData={orderData}/>
-                }
+                  Grand total:{" "}
+                  <span>
+                    $
+                    {carttotalprice +
+                      5 -
+                      (carttotalprice + 5) * coupens[selectedcoupen]}
+                  </span>
+                </h1>
+                {paymentmethod === "Cash On Delivery" ||
+                paymentmethod === "Udhar" ? (
+                  <button
+                    className="flex justify-center items-center px-5 py-3 border border-gray-200 rounded-2xl bg-purple-500 w-full mt-4 cursor-pointer"
+                    onClick={(e) => handleplaceorder(e)}
+                  >
+                    Place
+                  </button>
+                ) : (
+                  <Paymentgateway
+                    amount={carttotalprice + 5}
+                    orderData={orderData}
+                  />
+                )}
               </div>
             </div>
           </div>

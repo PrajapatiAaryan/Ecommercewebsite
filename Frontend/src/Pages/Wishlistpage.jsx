@@ -66,7 +66,7 @@ const Wishlistpage = () => {
                       </div>
 
                       {/* Add to Cart Button (Visible on Hover) */}
-                      <button className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer" onClick={()=>handleaddtocart(item.productid._id ,1 )}>
+                      <button className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer" onClick={()=>handleoneproductpage(item.productid._id)}>
                         Add to Cart
                       </button>
                     </div>

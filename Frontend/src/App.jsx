@@ -26,6 +26,7 @@ import Placeorder from "./Pages/Placeorder";
 import Myorder from "./Pages/Myorder";
 import Filterproductpage from "./Pages/Filterproductpage";
 import Orderslist from "./admin/Orderslist";
+import Filtersubcategorypage from "./Pages/Filtersubcategorypage";
 function App() {
   return (
     <>
@@ -41,6 +42,7 @@ function App() {
           <Route path="/details" element={<Detailedproduct />} />
           <Route path="/search/:word" element={<Searchedproductpage />} />
           <Route path="/category/:category" element={<Filterproductpage/>}/>
+          <Route path="/subcategory/:category/:subcategory" element={<Filtersubcategorypage/>}/>
           <Route path="/cart" element={<Cartpage />} />
           <Route path="/cheakout" element={<Cheakoutpage />} />
           <Route path="/payment" element={<Paymentmethod/>}/>

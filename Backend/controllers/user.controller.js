@@ -137,5 +137,37 @@ const deleteaddress = async(req,res)=>{
     console.log("deleteaddress error" , error)
   }
 }
+const adduserprofileimg = async (req, res) => {
+  const userId = req.user.id;
+  const image = req.file ? `http://localhost:4000/uploads/${req.file.filename}` : null;
 
-module.exports = { usersignup, userlogin, userlogout,adduseraddress,edituseraddress,getuser ,deleteaddress};
+  try {
+    const user = await Usermodel.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.profileimg = image;
+    await user.save();
+
+    res.status(200).json({ message: "User profile image updated", profileimg: image });
+  } catch (error) {
+    console.error("add user profile img error", error);
+    res.status(500).json({ message: "Add user profile image error", error });
+  }
+};
+// const updateuserprofiledata = async(req,res)=>{
+//   const userid = req.user.id;
+//   try {
+//     const user = await Usermodel.findOne({userid});
+//     if(!user)return res.json({message:"user not found" });
+//     user.firstName=firstName;
+//     user.lastName = lastName;
+//     user.email =email;
+//     user.password =password;
+
+//   } catch (error) {
+//     res.status(401).json({message:"updateuserprofiledata error" , error});
+//     console.log("update user profile error" , error)
+//   }
+// };
+
+module.exports = { usersignup, userlogin, userlogout,adduseraddress,edituseraddress,getuser ,deleteaddress ,adduserprofileimg};

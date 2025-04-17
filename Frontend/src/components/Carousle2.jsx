@@ -52,10 +52,10 @@ const Carousle2 = () => {
   };
 
   return (
-    <div className="w-full flex-col items-center px-20 pt-10 overflow-hidden">
+    <div className="w-full flex-col items-center px-2 lg:px-20 pt-10 overflow-hidden">
       {/* Heading and Navigation Buttons */}
-      <div className="flex justify-between items-center px-3 pb-10">
-        <h1 className="text-3xl font-semibold">What Our Customer Say's</h1>
+      <div className="flex justify-between items-center px-3 lg:pb-10">
+        <h1 className="text-2xl lg:text-3xl font-semibold">What Our Customer Say's</h1>
         <div className="flex gap-2 items-center">
           <button
             className="flex justify-center items-center p-4 border border-white bg-gray-50 rounded-md"
@@ -72,7 +72,8 @@ const Carousle2 = () => {
         </div>
       </div>
 
-      {/* Swiper Carousel */}
+      {/* Swiper Carousel for laptop*/}
+      <div className="hidden lg:block">
       <Swiper
         modules={[Navigation]}
         spaceBetween={10}
@@ -83,8 +84,8 @@ const Carousle2 = () => {
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col justify-center gap-3 bg-white  rounded-2xl px-3 py-3 h-[35vh]">
-              <h1>⭐⭐⭐⭐⭐</h1>
+            <div className="flex flex-col justify-center gap-3 bg-white  rounded-2xl px-3 py-3 h-fit">
+              <h1>⭐⭐⭐⭐</h1> 
               <p>
                {item.para}
               </p>
@@ -105,6 +106,42 @@ const Carousle2 = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+      </div>
+      {/* Swiper Carousel for phone*/}
+      <div className="block lg:hidden">
+      <Swiper
+        modules={[Navigation]}
+        spaceBetween={10}
+        slidesPerView={1} // Show 4 slides at a time
+        slidesPerGroup={1} // Move 1 slide at a time
+        loop={true} // Enables infinite looping Prevents empty spaces
+        onSwiper={(swiper) => (swiperRef.current = swiper)} // Store swiper instance
+      >
+        {items.map((item, index) => (
+          <SwiperSlide key={index}>
+            <div className="flex flex-col justify-center gap-3 bg-white  rounded-2xl px-3 py-3 h-fit">
+              <h1>⭐⭐⭐⭐</h1> 
+              <p>
+               {item.para}
+              </p>
+              <div className="flex gap-5 pt-5">
+                <img
+                  src={item.img}
+                  alt=""
+                  className="w-12 rounded-full"
+                />
+                <div>
+                  <h1 className="text-xl text-black font-semibold">
+                    {item.name}
+                  </h1>
+                  <h1 className="text-gray-600">Cricketer</h1>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      </div>
     </div>
   );
 };

@@ -27,10 +27,10 @@ const RelatedProducts = () => {
 
   return (
     <>
-      <div className="flex px-20">
+      <div className="flex lg:px-20 px-2">
         <div className="flex flex-col gap-3 ">
-          <h1 className="text-2xl font-bold text-black pl-7 py-5">Products You May Like Also</h1>
-          <div className="grid grid-cols-4 px-3 gap-5">
+          <h1 className="text-xl md:text-2xl font-bold text-black pl-7 py-5">Products You May Like Also</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-3 gap-5">
             {relatedproucts.map((item) => (
               <div
                 key={item._id}

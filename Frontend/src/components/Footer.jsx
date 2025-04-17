@@ -70,7 +70,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-around items-center py-2 w-full">
+        <div className="flex flex-col gap-3 md:flex-row justify-around items-center py-2 w-full">
           <div className="flex gap-3">
           <FaCcVisa className="size-9"/>
           <FaCcMastercard className="size-9"/>

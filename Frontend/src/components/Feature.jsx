@@ -3,7 +3,7 @@ import React from "react";
 const Feature = () => {
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-10 py-2 place-items-center md:px-28 md:py-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:px-10 px-2 py-2 place-items-center md:px-28 md:py-12">
         <div className=" px-2 py-2 w-full">
           <span className="material-symbols-outlined">package_2</span>
           <h1 className="font-semibold mt-2">Free Shipping</h1>

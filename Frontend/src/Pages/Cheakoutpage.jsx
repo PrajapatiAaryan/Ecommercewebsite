@@ -113,7 +113,7 @@ const Cheakoutpage = () => {
         >
           <span className="material-icons-outlined ">arrow_back_ios</span>Back
         </h1>
-        <h1 className="text-black text-3xl font-semibold py-3 ">
+        <h1 className="text-black text-2xl lg:text-3xl font-semibold py-3 ">
           Shipping Address
         </h1>
         <div className="flex gap-12 w-full items-start pt-7 flex-col lg:flex-row">
@@ -132,7 +132,7 @@ const Cheakoutpage = () => {
               </div>
             </div>
             <div className="flex gap-2 flex-col pt-3">
-              <h1 className="text-black font-bold text-2xl">
+              <h1 className="text-black font-bold text-xl lg:text-2xl">
                 Select a Delivery Address
               </h1>
               <p>
@@ -143,11 +143,11 @@ const Cheakoutpage = () => {
               </p>
             </div>
             {/* user fetched address */}
-            <div className="w-full flex lg:gap-8 gap-2">
+            <div className="w-full flex lg:gap-8 gap-3 flex-col lg:flex-row">
               {user?.user?.address.map((item, idx) => (
                 <div
                   key={idx}
-                  className="border border-gray-200 bg-gray-50 text-black w-1/2 flex flex-col gap-3 px-3 lg:py-2"
+                  className="border border-gray-200 bg-gray-50 text-black lg:w-1/2 flex flex-col gap-3 px-3 lg:py-2"
                 >
                   <h1 className="flex justify-between w-full items-center lg:text-2xl font-semibold px-4 py-2">
                     {item.fullName}
@@ -188,7 +188,7 @@ const Cheakoutpage = () => {
 
             <div className="py-3">
               <button
-                className="cursor-pointer flex justify-center items-center px-5 py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl"
+                className="cursor-pointer flex justify-center items-center lg:px-5 lg:py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl p-2"
                 onClick={() => {
                   navigate("/payment");
                 }}
@@ -261,7 +261,7 @@ const Cheakoutpage = () => {
                   />
                 </div>
                 <button
-                  className="w-1/2 border-gray-500 bg-black text-white px-3 py-2 flex justify-center items-center rounded-xl cursor-pointer"
+                  className="lg:w-1/2 border-gray-500 bg-black text-white px-3 py-2 flex justify-center items-center rounded-xl cursor-pointer"
                   onClick={(e) => handlesubmit(e)}
                 >
                   Add New Address

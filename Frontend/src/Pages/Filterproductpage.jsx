@@ -10,6 +10,7 @@ const Filterproductpage = () => {
   const { products } = useSelector((state) => state.product);
   const [filterproducts, setfilterproducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [qty, setqty] = useState(1)
   const navigate = useNavigate();
 
   // Filters state
@@ -80,14 +81,19 @@ const Filterproductpage = () => {
       setCurrentPage(page);
     }
   };
+  const handleaddtowhishlist = async(id ,qty)=>{
+           dispatch(addtowhishlist({productid:id ,quantity:Number(qty)}))
+           window.location.reload()
+           setqty(1)
+       }  
 
   return (
     <>
       <Navbar />
 
-      <div className="w-full flex gap-4 px-20 pt-10">
+      <div className="w-full flex gap-4 px-2 lg:px-20 pt-10 flex-col lg:flex-row">
         {/* -------- Filter Section -------- */}
-        <div className="w-[30%] flex flex-col mr-3">
+        <div className="w-full lg:w-[30%] flex flex-row lg:flex-col mr-3">
           {/* Clear Filters Button */}
           <button
             onClick={() => {
@@ -95,15 +101,17 @@ const Filterproductpage = () => {
               setSelectedColors([]);
               setSelectedSizes([]);
             }}
-            className="mb-4 p-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-700"
+            className="mb-4 p-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-700 w-fit h-fit lg:w-full"
           >
-            Clear All Filters
+            <span className="lg:hidden">Clear</span>
+            <span className="hidden lg:flex">Clear All Filters </span>
           </button>
 
           {/* Price Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3 mb-2">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 mb-2 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Price</h1>
+              <h1 className="lg:hidden">Price</h1>
+              <h1 className="hidden lg:flex">Filter by Price</h1>
               <button
                 onClick={() =>
                   setcoloropen(false) ||
@@ -111,13 +119,13 @@ const Filterproductpage = () => {
                   setPriceRangeOpen(!priceRangeOpen)
                 }
               >
-                <span className="material-icons-outlined">
+                <span className="material-icons-outlined ">
                   keyboard_arrow_down
                 </span>
               </button>
             </div>
             {priceRangeOpen && (
-              <div className="mt-2">
+              <div className="mt-2 w-fit">
                 {[
                   { label: "All", range: [0, 9999] },
                   { label: "Below ₹500", range: [0, 500] },
@@ -142,9 +150,10 @@ const Filterproductpage = () => {
           </div>
 
           {/* Color Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3 mb-2">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 mb-2 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Color</h1>
+              <h1 className="lg:hidden">Color</h1>
+              <h1 className="hidden lg:flex">Filter by Color</h1>
               <button
                 onClick={() =>
                   setsizeopen(false) ||
@@ -176,9 +185,11 @@ const Filterproductpage = () => {
           </div>
 
           {/* Size Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Size</h1>
+              <h1 className="lg:hidden">Size</h1>
+              <h1 className="hidden lg:flex">Filter by Size</h1>
+
               <button
                 onClick={() =>
                   setcoloropen(false) ||
@@ -211,8 +222,8 @@ const Filterproductpage = () => {
         </div>
 
         {/* -------- Product Section -------- */}
-        <div className="w-[70%]">
-          <div className="grid grid-cols-3 gap-4">
+        <div className="w-full lg:w-[70%]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {filterproducts.length === 0 ? (
               <h2 className="col-span-3 text-center text-xl font-semibold">
                 No products found.
@@ -221,20 +232,46 @@ const Filterproductpage = () => {
               filterproducts.map((item) => (
                 <div
                   key={item._id}
-                  className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6 transition-all duration-300"
-                  onClick={() => handleoneproductpage(item._id)}
+                  className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
                 >
+                  {/* Image Section */}
                   <div className="relative w-full h-60 flex justify-center items-center">
                     <img
                       src={item.image}
                       alt="product"
                       className="w-full h-full object-contain rounded-lg"
+                      onClick={() => handleoneproductpage(item._id)}
                     />
-                    <button className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300">
+
+                    {/* Hover Icons (Visible on Hover) */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <span
+                        className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleaddtowhishlist(item._id, qty)}
+                      >
+                        favorite
+                      </span>
+                      <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
+                        compare_arrows
+                      </span>
+                      <span
+                        className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleoneproductpage(item._id)}
+                      >
+                        visibility
+                      </span>
+                    </div>
+
+                    {/* Add to Cart Button (Visible on Hover) */}
+                    <button
+                      className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-200"
+                      onClick={() => handleoneproductpage(item._id)}
+                    >
                       Add to Cart
                     </button>
                   </div>
 
+                  {/* Product Details */}
                   <div className="flex flex-col gap-2 px-2 mt-4">
                     <h1 className="text-lg font-semibold text-gray-900">
                       {item.title}

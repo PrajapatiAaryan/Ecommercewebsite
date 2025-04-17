@@ -135,6 +135,29 @@ export const deleteaddress = createAsyncThunk(
     }
   }
 );
+
+export const updateProfileImage = createAsyncThunk(
+  "auth/updateProfileImage",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return rejectWithValue("Login first");
+
+      const response = await axios.post(`${APIURL}/user/profileimg`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data; // this will contain updated image URL
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Error uploading profile image"
+      );
+    }
+  }
+);
 // intial state
 const initialState = {
   user: null,
