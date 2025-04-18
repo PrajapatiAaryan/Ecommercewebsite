@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   addtocart,
+  clearcart,
   decreseqty,
   getcart,
   removecartitems,
@@ -11,9 +12,10 @@ import {
   getwhishlist,
   removefromwhishlist,
 } from "../redux/slices/whishlistslice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getorder } from "../redux/slices/orderslice";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Myorder = () => {
   const { whishlist, loading, error } = useSelector((state) => state.whishlist);
@@ -65,6 +67,25 @@ const Myorder = () => {
     fetchAllOrderProducts();
   }, [order]);
 
+  const location = useLocation();
+
+useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const status = query.get("status");
+
+    if (status === "success") {
+      toast.success("Order placed successfully 🎉");
+      dispatch(clearcart())
+    } else if (status === "failed") {
+      toast.error("Payment failed. Order not placed ❌");
+    }
+
+    if (status) {
+      // Remove the status query from the URL after showing toast
+      const cleanUrl = location.pathname;
+      navigate(cleanUrl, { replace: true }); // replaces the current history entry
+    }
+  }, [location, navigate]);
 
 
   

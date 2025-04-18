@@ -32,7 +32,7 @@ const Carousel = () => {
   const renderSlides = () =>
     items.map((item, index) => (
       <SwiperSlide key={index}>
-        <div className="bg-gray-50 min-h-[52vh] flex flex-col items-center py-2 relative ">
+        <div className="bg-gray-50 min-h-[55vh] flex flex-col items-center py-2 relative ">
           <h1 className="text-gray-600 text-7xl opacity-30 absolute font-bold">
             {item.text}
           </h1>

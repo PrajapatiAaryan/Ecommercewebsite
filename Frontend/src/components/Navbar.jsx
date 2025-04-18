@@ -7,6 +7,7 @@ import { getProducts } from "../redux/slices/productslice";
 import Minicart from "./Minicart";
 import { getcart } from "../redux/slices/cartslice";
 import { toast } from "react-toastify";
+import { FaHome, FaShopify } from "react-icons/fa";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -271,13 +272,15 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {navbaropen && (
           <div className="md:hidden flex flex-col bg-white border-t border-black p-5">
-            <NavLink to="/" className="py-2">
-              Home
+            <NavLink to="/" className="flex items-center gap-4 pl-1">
+              <FaHome className="scale-125"/>
+               Home
             </NavLink>
             <div
-              className="py-2 cursor-pointer"
+              className="py-2 cursor-pointer flex items-center gap-4 pl-1"
               onClick={() => setmegamenu(!megamenu)}
-            >
+            > 
+             <FaShopify className="scale-125"/>
               Shop
             </div>
             {localStorage.getItem("role") === "admin" && (
@@ -286,7 +289,7 @@ const Navbar = () => {
             {token ? (
               <div>
                 <button
-                  className="cursor-pointer flex items-center gap-2"
+                  className="cursor-pointer flex items-center gap-2 "
                   onClick={() => handleprofile()}
                 >
                   <span className="material-icons-outlined ">

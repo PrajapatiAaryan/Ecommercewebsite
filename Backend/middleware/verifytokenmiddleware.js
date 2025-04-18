@@ -5,7 +5,7 @@ const verifytoken = async(req,res,next)=>{
   // for post man use  below code for token
   // console.log("this is token" ,req.headers.authorization.split(" ")[2])
   try {
-    const token =req.headers.authorization.split(" ")[1];
+    const token =req?.headers?.authorization?.split(" ")[1];
     // const token =req.headers.authorization;
     // console.log("this is token" ,req.headers.authorization)
     if(!token)return res.status(201).json({message:"token not found"})

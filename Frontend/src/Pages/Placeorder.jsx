@@ -71,7 +71,7 @@ const Placeorder = () => {
     items: orderItems,
     totalAmount: carttotalprice + 5,
     paymentStatus:
-      paymentmethod === ("Cash On Delivery" || "Udhar") ? "Pending" : "Paid",
+      paymentmethod ==="Cash On Delivery"? "Pending" : "Paid",
     orderStatus: "Placed",
     shippingAddress: {
       fullName: currentaddress?.fullName,

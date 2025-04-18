@@ -10,16 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../redux/slices/productslice";
 import CountdownTimer from "../components/CountdownTimer";
 import { FaBeer, FaInstagram, FaInstagramSquare } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { addtocart } from "../redux/slices/cartslice";
 import Carousle from "../components/Carousle";
 import Carousle2 from "../components/Carousle2";
 import { addtowhishlist } from "../redux/slices/whishlistslice";
+import { toast } from "react-toastify";
 
 const Homepage = () => {
   const { products } = useSelector((state) => state.product);
   const { cart, loading, error } = useSelector((state) => state.cart);
-  const [qty, setqty] = useState(1)
+  const [qty, setqty] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [visible, setvisible] = useState(false);
@@ -33,23 +34,44 @@ const Homepage = () => {
     navigate(`/details`);
     window.scrollTo(0, 0);
   };
- const handleaddtocart = async(id ,qty)=>{
-         dispatch(addtocart({productid:id ,quantity:Number(qty)}))
-         window.location.reload()
-         setqty(1)
-     }  
-    const handleaddtowhishlist = async(id ,qty)=>{
-         dispatch(addtowhishlist({productid:id ,quantity:Number(qty)}))
-         window.location.reload()
-         setqty(1)
-     }  
- 
+  const handleaddtocart = async (id, qty) => {
+    dispatch(addtocart({ productid: id, quantity: Number(qty) }));
+    window.location.reload();
+    setqty(1);
+  };
+  const handleaddtowhishlist = async (id, qty) => {
+    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+    window.location.reload();
+    setqty(1);
+  };
+
+
+  // thsi is for toast of success 
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const status = query.get("status");
+
+    if (status === "success") {
+      toast.success("Order placed successfully 🎉");
+    } else if (status === "failed") {
+      toast.error("Payment failed. Order not placed ❌");
+    }
+
+    if (status) {
+      // Remove the status query from the URL after showing toast
+      const cleanUrl = location.pathname;
+      navigate(cleanUrl, { replace: true }); // replaces the current history entry
+    }
+  }, [location, navigate]);
+
   return (
     <>
       <Navbar />
 
-      <HomeCarousel/>
-      <Carousle/> 
+      <HomeCarousel />
+      <Carousle />
       {/* <section>
         <div className="flex justify-center md:px-20 flex-col">
           <div className="flex justify-between items-center p-10">
@@ -136,7 +158,6 @@ const Homepage = () => {
               <div
                 key={item._id}
                 className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
-                
               >
                 {/* Image Section */}
                 <div className="relative w-full h-60 flex justify-center items-center">
@@ -149,13 +170,19 @@ const Homepage = () => {
 
                   {/* Hover Icons (Visible on Hover) */}
                   <div className="absolute top-3 right-3 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer" onClick={()=>handleaddtowhishlist(item._id ,qty)}>
+                    <span
+                      className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                      onClick={() => handleaddtowhishlist(item._id, qty)}
+                    >
                       favorite
                     </span>
                     <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
                       compare_arrows
                     </span>
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer" onClick={() => handleoneproductpage(item._id)}>
+                    <span
+                      className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                      onClick={() => handleoneproductpage(item._id)}
+                    >
                       visibility
                     </span>
                   </div>
@@ -163,7 +190,7 @@ const Homepage = () => {
                   {/* Add to Cart Button (Visible on Hover) */}
                   <button
                     className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-200"
-                    onClick={()=>handleoneproductpage(item._id)}
+                    onClick={() => handleoneproductpage(item._id)}
                   >
                     Add to Cart
                   </button>
@@ -176,9 +203,9 @@ const Homepage = () => {
                   </h1>
                   <h2 className="text-gray-600">{item.titleDescription}</h2>
                   <h1 className="text-xl font-bold text-black">
-                  ₹{item.offerPrice}{" "}
+                    ₹{item.offerPrice}{" "}
                     <span className="line-through text-gray-500 text-lg">
-                    ₹{item.actualPrice}
+                      ₹{item.actualPrice}
                     </span>
                   </h1>
                 </div>
@@ -188,12 +215,14 @@ const Homepage = () => {
         </div>
       </section>
       <section>
-        <div className="flex  justify-center items-center  md:px-20 ">
-          <div className="flex justify-between items-center lg:flex-row flex-col w-full pt-20 ">
-            <div className="pl-6 flex justify-center items-center  w-1/2 overflow-hidden ">
-              <div className="flex flex-col gap-3">
-                <h1 className="lg:text-3xl text-black">Deals of the Month</h1>
-                <p className="text-sm text-gray-900">
+        <div className="flex  justify-center items-center  lg:px-8  w-full px-3">
+          <div className="flex justify-between items-center md:flex-row flex-col-reverse w-full pt-20 ">
+            <div className="md:pl-6 flex justify-center items-center w-fit  md:w-1/2 overflow-hidden  px-4">
+              <div className="flex flex-col gap-3  p-3">
+                <h1 className="lg:text-3xl text-black text-xl text-center lg:text-start font-semibold">
+                  Deals of the Month
+                </h1>
+                <p className="text-sm lg:text-xl text-gray-900  ">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Aliquam delectus quidem, sab ex maiores magni. Eius enim
                   tempore nostrum quia quasi?quidem, sab ex maiores magni. Eius
@@ -201,14 +230,17 @@ const Homepage = () => {
                   Eius enim tempore nostrum quia quasi?quidem, sab ex maiores
                   magni. Eius enim tempore nostrum quia quasi?
                 </p>
-                <div className="px-20 py-2">
+                <div className="lg:px-20 py-2">
                   <CountdownTimer />
                 </div>
                 <div>
-                  <button className="bg-gray-900 rounded-xl text-white flex justify-center items-center px-7 py-3 border border-gray-50 gap-3 cursor-pointer" onClick={()=>{
-                    navigate('/allproducts')
-                    window.scrollTo(0,0)
-                  }}>
+                  <button
+                    className="bg-gray-900 rounded-xl text-white flex justify-center items-center px-7 py-3 border border-gray-50 gap-3 cursor-pointer"
+                    onClick={() => {
+                      navigate("/allproducts");
+                      window.scrollTo(0, 0);
+                    }}
+                  >
                     View All Products{" "}
                     <span className="material-icons-outlined">
                       arrow_right_alt
@@ -217,7 +249,7 @@ const Homepage = () => {
                 </div>
               </div>
             </div>
-            <div className=" w-1/2 flex justify-end pr-4 items-center">
+            <div className=" md:w-1/2 flex justify-center md:justify-end pr-4 items-center ">
               <img
                 src="/images/dealofmonth.png"
                 alt=""
@@ -314,7 +346,7 @@ const Homepage = () => {
           </div>
         </div>
       </section> */}
-      <Carousle2/>
+      <Carousle2 />
       <section>
         <div className="flex justify-center items-center md:px-20 w-full  ">
           <div className="min-h-[100%] pt-32  w-full">
