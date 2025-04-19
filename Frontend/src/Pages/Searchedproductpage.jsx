@@ -3,7 +3,8 @@ import Navbar from "../components/Navbar";
 import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addtowhishlist } from "../redux/slices/whishlistslice";
 
 const Searchedproductpage = () => {
   const { word } = useParams();
@@ -12,6 +13,7 @@ const Searchedproductpage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [qty, setqty] = useState(1);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   // Filters state
   const [priceRange, setPriceRange] = useState([0, 9999]);
@@ -88,12 +90,7 @@ const Searchedproductpage = () => {
     navigate(`/details`);
   };
 
-  const totalPages = 5;
-  const changePage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+
   const handleaddtowhishlist = async (id, qty) => {
     dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
     window.location.reload();

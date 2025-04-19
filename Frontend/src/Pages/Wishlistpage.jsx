@@ -15,23 +15,6 @@ const Wishlistpage = () => {
   }, []);
   console.log(whishlist)
 
-  // useEffect(() => {
-  //   if (whishlist.length > 0 && whishlist[0]?.whishlist?.items) {
-  //     const total = whishlist[0].whishlist.items.reduce(
-  //       (acc, item) => acc + item.productid.offerPrice * item.quantity,
-  //       0
-  //     );
-  //     setcarttotalprice(total);
-  //     localStorage.setItem("cartTotal", total); // Store total in localStorage
-  //   }
-  // }, [whishlist]); 
-
-     const handleaddtocart = async(id ,qty)=>{
-             console.log(id,qty)
-              dispatch(addtocart({productid:id ,quantity:Number(qty)}))
-              window.location.reload()
-              // setqty(1)
-          } 
       const handleremovefromwhishlist = (id)=>{
         dispatch(removefromwhishlist(id))
         window.location.reload()

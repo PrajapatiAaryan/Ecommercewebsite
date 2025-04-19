@@ -9,7 +9,7 @@ const Minicart = () => {
   const dispatch = useDispatch();
   const [carttotalprice, setcarttotalprice] = useState(0);
   const navigate = useNavigate();
-
+  const [cartItems, setcartItems] = useState(cart[0]?.cart?.items || [])
   useEffect(() => {
     dispatch(getcart());
   }, [dispatch]);
@@ -25,14 +25,16 @@ const Minicart = () => {
 
   const handledelete = (product) => {
     dispatch(removecartitems(product._id));
-    window.location.reload();
+    window.location.reload()
   };
 
   const viewcart = () => {
     navigate("/cart");
   };
-
-  const cartItems = cart[0]?.cart?.items || [];
+  const handlecheakout = ()=>{
+    navigate('/cheakout')
+  }
+  // const cartItems = 
 
   return (
     <div className="absolute top-16 lg:right-4 right-0 border border-black bg-white text-black h-fit w-fit z-10 flex flex-col gap-3 px-3 pb-3 ">
@@ -77,7 +79,7 @@ const Minicart = () => {
             View Cart
           </button>
 
-          <button className="flex justify-center items-center px-5 py-2 border border-black bg-black text-white text-xl rounded-xl cursor-pointer">
+          <button className="flex justify-center items-center px-5 py-2 border border-black bg-black text-white text-xl rounded-xl cursor-pointer" onClick={()=>handlecheakout()}>
             Checkout
           </button>
         </>

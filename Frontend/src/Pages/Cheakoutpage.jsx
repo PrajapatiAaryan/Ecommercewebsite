@@ -272,7 +272,7 @@ const Cheakoutpage = () => {
           <div className="lg:w-[25%] border-8  border-white h-fit px-3 shadow-sm shadow-gray-500 flex flex-col py-3">
             <div>
               <h1 className="flex justify-between items-center py-2 text-2xl w-full">
-                Subtotal <span>${carttotalprice}</span>
+                Subtotal <span>₹{carttotalprice}</span>
               </h1>
               <div>
                 <label className="text-sm text-gray-700">
@@ -288,10 +288,10 @@ const Cheakoutpage = () => {
                   </button>
                 </div>
                 <h1 className="flex justify-between items-center py-2">
-                  Delivery Charge <span>$5</span>
+                  Delivery Charge <span>₹21</span>
                 </h1>
                 <h1 className="flex justify-between items-center py-2 font-semibold text-2xl border-t border-gray-200">
-                  Grand total <span>${carttotalprice + 5}</span>
+                  Grand total <span>₹{carttotalprice + 21}</span>
                 </h1>
               </div>
             </div>

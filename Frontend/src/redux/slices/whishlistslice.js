@@ -21,6 +21,7 @@ export const addtowhishlist = createAsyncThunk(
         }
       );
       console.log("the response for addtocart redux", response.data);
+      alert("item is added to whishlist")
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

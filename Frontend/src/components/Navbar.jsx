@@ -8,6 +8,7 @@ import Minicart from "./Minicart";
 import { getcart } from "../redux/slices/cartslice";
 import { toast } from "react-toastify";
 import { FaHome, FaShopify } from "react-icons/fa";
+import { getwhishlist } from "../redux/slices/whishlistslice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,8 @@ const Navbar = () => {
   // console.log("role is ="  )
   const { cart } = useSelector((state) => state.cart);
   const megamenudat = {
-    Men: ["T-shirt", "Jeans", "Shirt", "Jackets", "Blazers"],
-    women: ["Tshirt", "Jeans", "Shirt", "Ethnic", "Jackets"],
+    Men: ["T-shirt", "Jeans", "Shirt", "Jackets", "Blazzers"],
+    women: ["T-shirt", "Jeans", "Shirts", "Ethnic", "Jackets"],
     footwear: ["Flats", "Casual Shoes", "Heels", "Boots", "Sports Shoes"],
     kids: [
       "T-Shirts",
@@ -40,6 +41,7 @@ const Navbar = () => {
   // get products
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getcart())
   }, []);
 
   //  navigate functions
@@ -53,14 +55,6 @@ const Navbar = () => {
     dispatch(userlogout());
   };
 
-  // search filter
-  const searchText = "t-shirt";
-  const searchProducts = (searchText, products) => {
-    return products?.filter((product) =>
-      product.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-  };
-  // console.log("this is the output of search filter" ,searchProducts(searchText ,products))
 
   const handlesearch = (e) => {
     e.preventDefault();
@@ -69,12 +63,12 @@ const Navbar = () => {
   };
 
   const handlecart = async () => {
-    const response = await dispatch(getcart());
+    dispatch(getcart())
     setopencart(!opencart);
-    console.log(response);
   };
 
   const handlewhishlist = async () => {
+    dispatch(getwhishlist());
     navigate("/profile/wishlist");
   };
   const handleprofile = async () => {
@@ -89,9 +83,9 @@ const Navbar = () => {
   return (
     <>
       <nav className="border border-black w-full bg-white">
-        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between md:px-6 py-4 max-w-7xl mx-auto px-2">
           {/* Logo */}
-          <div className="hidden md:flex">
+          <div className="flex pr-4">
             <img src={logo} alt="logoimg" className="w-12" />
           </div>
 
@@ -131,7 +125,7 @@ const Navbar = () => {
             </span>
           </form>
           {/* Navbar Icons and Login Button */}
-          <div className="flex gap-3 lg:gap-6 items-center pl-4 lg:pl-0">
+          <div className="flex gap-3 lg:gap-6 items-center  lg:pl-0 px-2 ">
             <button
               className="cursor-pointer "
               onClick={() => handlewhishlist()}
@@ -143,36 +137,36 @@ const Navbar = () => {
             </button>
             {opencart && <Minicart />}
             <div className="hidden lg:block ">
-            {token ? (
-              <div>
+              {token ? (
+                <div>
+                  <button
+                    className="cursor-pointer"
+                    onClick={() => handleprofile()}
+                  >
+                    <span className="material-icons-outlined ">
+                      account_circle
+                    </span>
+                  </button>
+                  <button
+                    className={
+                      profile
+                        ? " absolute top-16 right-28 bg-black text-white px-6 py-2 rounded-xl border border-black cursor-pointer z-10"
+                        : "hidden"
+                    }
+                    onClick={() => handlelogout()}
+                  >
+                    logout
+                  </button>
+                </div>
+              ) : (
                 <button
-                  className="cursor-pointer"
-                  onClick={() => handleprofile()}
+                  className="bg-black text-white px-6 py-2 rounded-xl border border-black cursor-pointer"
+                  onClick={() => handlenavigate()}
                 >
-                  <span className="material-icons-outlined ">
-                    account_circle
-                  </span>
+                  Login
                 </button>
-                <button
-                  className={
-                    profile
-                      ? " absolute top-16 right-28 bg-black text-white px-6 py-2 rounded-xl border border-black cursor-pointer z-10"
-                      : "hidden"
-                  }
-                  onClick={() => handlelogout()}
-                >
-                  logout
-                </button>
-              </div>
-            ) : (
-              <button
-                className="bg-black text-white px-6 py-2 rounded-xl border border-black cursor-pointer"
-                onClick={() => handlenavigate()}
-              >
-                Login
-              </button>
-            )}
-             </div>
+              )}
+            </div>
           </div>
 
           {/* Hamburger Menu (Mobile) */}
@@ -238,8 +232,8 @@ const Navbar = () => {
                   </li>
                 ))}
                 <li className="text-black font-semibold">Western wear</li>
-                <li className="text-black cursor-pointer">Dresses</li>
-                <li className="text-black cursor-pointer">Jumpsuites</li>
+                <li className="text-black cursor-pointer" onClick={() => handlemegamenu("Dresses", "women")}>Dresses</li>
+                <li className="text-black cursor-pointer" onClick={() => handlemegamenu("Jumpsuit", "women")}>Jumpsuit</li>
               </div>
               <div className="flex flex-col gap-5 list-none border-r border-gray-500 pr-3">
                 <li className="text-black font-semibold">Footwear</li>
@@ -273,16 +267,9 @@ const Navbar = () => {
         {navbaropen && (
           <div className="md:hidden flex flex-col bg-white border-t border-black p-5">
             <NavLink to="/" className="flex items-center gap-4 pl-1">
-              <FaHome className="scale-125"/>
-               Home
+              <FaHome className="scale-125" />
+              Home
             </NavLink>
-            <div
-              className="py-2 cursor-pointer flex items-center gap-4 pl-1"
-              onClick={() => setmegamenu(!megamenu)}
-            > 
-             <FaShopify className="scale-125"/>
-              Shop
-            </div>
             {localStorage.getItem("role") === "admin" && (
               <NavLink to="/admin">Admin</NavLink>
             )}
@@ -294,7 +281,8 @@ const Navbar = () => {
                 >
                   <span className="material-icons-outlined ">
                     account_circle
-                  </span> My Profile
+                  </span>{" "}
+                  My Profile
                 </button>
                 <button
                   className={

@@ -27,6 +27,7 @@ export const addtocart = createAsyncThunk(
 export const getcart = createAsyncThunk(
   "cart/getcart",
   async (_, rejectWithValue) => {
+    // console.log("the getcart function is called")
     try {
       let token = localStorage.getItem("token");
       if (!token) return null;
@@ -115,7 +116,7 @@ const cartslice = createSlice({
       .addCase(addtocart.fulfilled, (state, action) => {
         state.loading = false;
         state.cart.push(action.payload);
-        toast("item added to cart successfullly");
+        // toast("item added to cart successfullly");
       })
       .addCase(addtocart.rejected, (state, action) => {
         state.loading = false;
@@ -130,7 +131,7 @@ const cartslice = createSlice({
       })
       .addCase(getcart.rejected ,(state,action)=>{
         state.loading = false;
-        toast("login first")
+        // toast("login first")
       })
       .addCase(removecartitems.fulfilled,(state,action)=>{
         state.loading = false;

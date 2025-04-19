@@ -46,22 +46,22 @@ const CountdownTimer = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center   text-black lg:w-1/2 ">
-      <div className="flex gap-3 text-2xl ">
-        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
-          <p className="lg:text-2xl font-bold">{timeLeft.days}</p>
+    <div className="flex items-center md:items-start  text-black md:w-1/2  w-full">
+      <div className="flex gap-3 text-2xl items-center ">
+        <div className="md:p-4 flex justify-center items-center flex-col bg-white rounded-lg text-center md:w-24 border border-gray-300 p-2 h-fit md:h-full">
+          <p className="lg:text-2xl font-bold text-sm">{timeLeft.days}</p>
           <p className="text-sm">Days</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
-          <p className="lg:text-2xl font-bold">{timeLeft.hours}</p>
+        <div className="md:p-4 flex justify-center items-center flex-col bg-white rounded-lg text-center md:w-24 border border-gray-300 p-2 h-fit md:h-full">
+          <p className="lg:text-2xl font-bold text-sm">{timeLeft.hours}</p>
           <p className="text-sm">Hours</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
-          <p className="lg:text-2xl font-bold">{timeLeft.minutes}</p>
+        <div className="md:p-4 flex justify-center items-center flex-col bg-white rounded-lg text-center md:w-24 border border-gray-300 p-2 h-fit md:h-full">
+          <p className="lg:text-2xl font-bold text-sm">{timeLeft.minutes}</p>
           <p className="text-sm">Minutes</p>
         </div>
-        <div className="p-4 bg-white rounded-lg text-center lg:w-24 border border-gray-300">
-          <p className="lg:text-2xl font-bold">{timeLeft.seconds}</p>
+        <div className="md:p-4 flex justify-center items-center flex-col bg-white rounded-lg text-center md:w-24 border border-gray-300 p-2 h-fit md:h-full">
+          <p className="lg:text-2xl font-bold text-sm">{timeLeft.seconds}</p>
           <p className="text-sm">Seconds</p>
         </div>
       </div>

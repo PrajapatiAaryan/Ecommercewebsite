@@ -149,10 +149,10 @@ const Paymentmethod = () => {
                   </button>
                 </div>
                 <h1 className="flex justify-between items-center py-2">
-                  Delivery Charge <span>$5</span>
+                  Delivery Charge <span>₹21</span>
                 </h1>
                 <h1 className="flex justify-between items-center py-2 font-semibold text-2xl border-t border-gray-200">
-                  Grand total <span>${carttotalprice + 5}</span>
+                  Grand total <span>₹{carttotalprice + 21}</span>
                 </h1>
               </div>
             </div>

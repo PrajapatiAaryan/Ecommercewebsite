@@ -127,10 +127,10 @@ const Cartpage = () => {
                   </button>
                 </div>
                 <h1 className="flex justify-between items-center py-2">
-                  Delivery Charge <span>₹5</span>
+                  Delivery Charge <span>₹21</span>
                 </h1>
                 <h1 className="flex justify-between items-center py-2">
-                  Grand total <span>₹{carttotalprice + 5}</span>
+                  Grand total <span>₹{carttotalprice + 21}</span>
                 </h1>
                 <button className="bg-black text-white text-xl flex justify-center items-center px-5 py-2 border border-black rounded-xl w-full cursor-pointer " onClick={()=>handlecheakout()}>
                   Cheakout

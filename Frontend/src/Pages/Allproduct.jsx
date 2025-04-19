@@ -3,15 +3,17 @@ import Navbar from "../components/Navbar";
 import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addtowhishlist } from "../redux/slices/whishlistslice";
 
 const Allproduct = () => {
   const { category } = useParams();
   const { products } = useSelector((state) => state.product);
   const [filterproducts, setfilterproducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [qty, setqty] = useState(1)
+  const [qty, setqty] = useState(1);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   // Filters state
   const [priceRange, setPriceRange] = useState([0, 9999]);
@@ -28,13 +30,6 @@ const Allproduct = () => {
 
   useEffect(() => {
     let filtered = products;
-
-    // // Filter by category
-    // if (category) {
-    //   filtered = filtered.filter(
-    //     (item) => item.category.toLowerCase() === category.toLowerCase()
-    //   );
-    // }
 
     // Filter by price
     filtered = filtered.filter(
@@ -75,17 +70,28 @@ const Allproduct = () => {
     navigate(`/details`);
   };
 
-  const totalPages = 5;
+  // pages logic
+  const productsPerPage = 9;
+  const totalPages = Math.ceil(filterproducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const currentProducts = filterproducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
+
   const changePage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+    window.scrollTo(0,0)
   };
-  const handleaddtowhishlist = async(id ,qty)=>{
-           dispatch(addtowhishlist({productid:id ,quantity:Number(qty)}))
-           window.location.reload()
-           setqty(1)
-       }  
+
+  const handleaddtowhishlist =(id, qty) => {
+    console.log("button is clicket whishlist")
+    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+    window.location.reload();
+    setqty(1);
+  };
 
   return (
     <>
@@ -224,60 +230,100 @@ const Allproduct = () => {
                 No products found.
               </h2>
             ) : (
-              filterproducts.map((item) => (
+              currentProducts.map((item) => (
                 <div
-                key={item._id}
-                className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
-                
-              >
-                {/* Image Section */}
-                <div className="relative w-full h-60 flex justify-center items-center">
-                  <img
-                    src={item.image}
-                    alt="product"
-                    className="w-full h-full object-contain rounded-lg"
-                    onClick={() => handleoneproductpage(item._id)}
-                  />
+                  key={item._id}
+                  className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
+                >
+                  {/* Image Section */}
+                  <div className="relative w-full h-60 flex justify-center items-center">
+                    <img
+                      src={item.image}
+                      alt="product"
+                      className="w-full h-full object-contain rounded-lg"
+                      onClick={() => handleoneproductpage(item._id)}
+                    />
 
-                  {/* Hover Icons (Visible on Hover) */}
-                  <div className="absolute top-3 right-3 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer" onClick={()=>handleaddtowhishlist(item._id ,qty)}>
-                      favorite
-                    </span>
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
-                      compare_arrows
-                    </span>
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer" onClick={() => handleoneproductpage(item._id)}>
-                      visibility
-                    </span>
+                    {/* Hover Icons (Visible on Hover) */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <span
+                        className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleaddtowhishlist(item._id, qty)}
+                      >
+                        favorite
+                      </span>
+                      <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
+                        compare_arrows
+                      </span>
+                      <span
+                        className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleoneproductpage(item._id)}
+                      >
+                        visibility
+                      </span>
+                    </div>
+
+                    {/* Add to Cart Button (Visible on Hover) */}
+                    <button
+                      className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-200"
+                      onClick={() => handleoneproductpage(item._id)}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
 
-                  {/* Add to Cart Button (Visible on Hover) */}
-                  <button
-                    className="absolute bottom-3 bg-white text-black py-2 px-6 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-200"
-                    onClick={()=>handleoneproductpage(item._id)}
-                  >
-                    Add to Cart
-                  </button>
+                  {/* Product Details */}
+                  <div className="flex flex-col gap-2 px-2 mt-4">
+                    <h1 className="text-lg font-semibold text-gray-900">
+                      {item.title}
+                    </h1>
+                    <h2 className="text-gray-600">{item.titleDescription}</h2>
+                    <h1 className="text-xl font-bold text-black">
+                      ₹{item.offerPrice}{" "}
+                      <span className="line-through text-gray-500 text-lg">
+                        ₹{item.actualPrice}
+                      </span>
+                    </h1>
+                  </div>
                 </div>
-
-                {/* Product Details */}
-                <div className="flex flex-col gap-2 px-2 mt-4">
-                  <h1 className="text-lg font-semibold text-gray-900">
-                    {item.title}
-                  </h1>
-                  <h2 className="text-gray-600">{item.titleDescription}</h2>
-                  <h1 className="text-xl font-bold text-black">
-                  ₹{item.offerPrice}{" "}
-                    <span className="line-through text-gray-500 text-lg">
-                    ₹{item.actualPrice}
-                    </span>
-                  </h1>
-                </div>
-              </div>
               ))
             )}
           </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-center items-center mt-8 space-x-2  sticky">
+              {/* Left Arrow */}
+              <button
+                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                onClick={() => changePage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <span className="material-icons-outlined">west</span>
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => changePage(index + 1)}
+                  className={`w-8 h-8 flex items-center justify-center rounded-full font-semibold  ${
+                    currentPage === index + 1
+                      ? "bg-black text-white p-2"
+                      : "bg-gray-200 text-gray-700"
+                  }  hover:bg-gray-300 transition-all`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              {/* Right Arrow */}
+              <button
+                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                onClick={() => changePage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                <span className="material-icons-outlined">east</span>
+              </button>
+            </div>
         </div>
       </div>
 

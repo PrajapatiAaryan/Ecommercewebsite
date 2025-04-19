@@ -184,7 +184,7 @@ const authslice = createSlice({
       .addCase(usersignup.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-        toast(action.payload.message);
+        // toast(action.payload.message);
       })
       .addCase(userlogin.pending, (state) => {
         state.status = "loading";
@@ -193,12 +193,12 @@ const authslice = createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.isauthenticated = true;
-        toast(action.payload.message);
+        // toast(action.payload.message);
       })
       .addCase(userlogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-        toast(action.payload.message);
+        // toast(action.payload.message);
       })
       .addCase(userlogout.fulfilled, (state) => {
         state.user = null;

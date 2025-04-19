@@ -6,8 +6,9 @@ import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import { getdetailproduct } from "../redux/slices/productslice";
 import RelatedProducts from "../components/RelatedProducts";
-import { addtocart } from "../redux/slices/cartslice";
-import { addtowhishlist } from "../redux/slices/whishlistslice";
+import { addtocart, getcart } from "../redux/slices/cartslice";
+import { addtowhishlist, getwhishlist } from "../redux/slices/whishlistslice";
+import { toast } from "react-toastify";
 
 const DetailedProduct = () => {
   const { detailproduct } = useSelector((state) => state.product);
@@ -27,14 +28,16 @@ const DetailedProduct = () => {
   };
 
   const handleaddtocart = async (id, qty) => {
-    dispatch(addtocart({ productid: id, quantity: Number(qty) ,color:selcetedcolor ,size:selectedsize}));
+    dispatch(addtocart({ productid: id, quantity: Number(qty) ,color:selcetedcolor ,size:selectedsize}))
+    alert("item is added to cart")
+    // dispatch(getcart()); // Refresh cart in Redux after adding
     window.location.reload();
     setqty(1);
   };
 
   const handleaddtowhishlist = async (id, qty) => {
-    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
+    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }))
+    window.location.reload()
     setqty(1);
   };
 
@@ -135,7 +138,7 @@ const DetailedProduct = () => {
                 <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all" onClick={() => handleaddtocart(detailproduct._id, qty)}>
                   Add to Cart
                 </button>
-                <div className="p-2 border border-gray-400 rounded-lg cursor-pointer hover:border-black" onClick={() => handleaddtowhishlist(detailproduct._id, qty)}>
+                <div className="p-2 border border-gray-400 rounded-lg cursor-pointer hover:border-black flex justify-center items-center" onClick={() => handleaddtowhishlist(detailproduct._id, qty)}>
                   <span className="material-icons-outlined text-gray-600">favorite</span>
                 </div>
               </div>
@@ -144,7 +147,7 @@ const DetailedProduct = () => {
 
           {/* Tabs Section */}
           <div className="mt-10">
-            <div className="flex gap-6 border-b border-gray-300 text-lg w-[80%] overflow-scroll">
+            <div className="flex gap-6 border-b border-gray-300 text-lg w-[80%] overflow-scroll no-scrollbar">
               {["Description", "Additional Information", "Reviews"].map((tab) => (
                 <h1
                   key={tab}

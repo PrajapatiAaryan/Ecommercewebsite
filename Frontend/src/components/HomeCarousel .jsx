@@ -10,9 +10,9 @@ const HomeCarousel = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="lg:h-[80vh] w-full px-1 py-1 ">
+      <div className="lg:h-[80vh] w-full px-3 py-4  ">
         <img
-          src="/images/website baner.jpg"
+          src="/images/baner2.png"
           // src="/images/baner.png"
           alt="baner img"
           // loading="lazy"

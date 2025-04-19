@@ -34,11 +34,6 @@ const Homepage = () => {
     navigate(`/details`);
     window.scrollTo(0, 0);
   };
-  const handleaddtocart = async (id, qty) => {
-    dispatch(addtocart({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
-    setqty(1);
-  };
   const handleaddtowhishlist = async (id, qty) => {
     dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
     window.location.reload();
@@ -215,10 +210,10 @@ const Homepage = () => {
         </div>
       </section>
       <section>
-        <div className="flex  justify-center items-center  lg:px-8  w-full px-3">
+        <div className="flex  justify-center items-center  lg:px-8  w-full px-3 ">
           <div className="flex justify-between items-center md:flex-row flex-col-reverse w-full pt-20 ">
             <div className="md:pl-6 flex justify-center items-center w-fit  md:w-1/2 overflow-hidden  px-4">
-              <div className="flex flex-col gap-3  p-3">
+              <div className="flex flex-col gap-3  p-3 ">
                 <h1 className="lg:text-3xl text-black text-xl text-center lg:text-start font-semibold">
                   Deals of the Month
                 </h1>
@@ -230,7 +225,7 @@ const Homepage = () => {
                   Eius enim tempore nostrum quia quasi?quidem, sab ex maiores
                   magni. Eius enim tempore nostrum quia quasi?
                 </p>
-                <div className="lg:px-20 py-2">
+                <div className="py-2 ">
                   <CountdownTimer />
                 </div>
                 <div>
