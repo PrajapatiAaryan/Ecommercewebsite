@@ -27,7 +27,7 @@ import Filterproductpage from "./Pages/Filterproductpage";
 import Orderslist from "./admin/Orderslist";
 import Filtersubcategorypage from "./Pages/Filtersubcategorypage";
 import FirstPagecontent from "./admin/FirstPagecontent";
-import AddProduct from "./admin/Addproduct";
+import AddProduct from "./admin/AddProduct";
 function App() {
   
   return (

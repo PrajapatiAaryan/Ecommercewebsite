@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import Feature from "../components/Feature";
 import Footer from "../components/Footer";
-import AddProduct from "../admin/Addproduct";
+import AddProduct from "../admin/AddProduct";
 import baner from "/images/freepik__adjust__12200.png";
 import HomeCarousel from "../components/HomeCarousel ";
 import { useDispatch, useSelector } from "react-redux";
