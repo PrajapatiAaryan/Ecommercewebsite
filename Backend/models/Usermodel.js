@@ -71,7 +71,7 @@ usermodelschema.methods.comparepassword = async function (enteredpassword) {
 // 🔹 Generate JWT Token
 usermodelschema.methods.generatetoken = function () {
   return jwt.sign({ id: this._id, isAdmin: this.isAdmin }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRY || "1d", // ✅ Use env variable for expiry
+    expiresIn: process.env.JWT_EXPIRY || "7d", // ✅ Use env variable for expiry
   });
 };
 

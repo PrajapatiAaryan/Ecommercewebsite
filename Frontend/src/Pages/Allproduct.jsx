@@ -96,7 +96,6 @@ const Allproduct = () => {
   // whishlist handling
   const handleaddtowhishlist = async (id, qty) => {
     try {
-      console.log("button is clicked for wishlist");
       const result = await dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
   
       if (addtowhishlist.fulfilled.match(result)) {
@@ -118,9 +117,9 @@ const Allproduct = () => {
     <>
       <Navbar />
 
-      <div className="w-full flex gap-4 px-20 pt-10">
+      <div className="w-full flex gap-4 px-2 lg:px-20 pt-10 flex-col lg:flex-row">
         {/* -------- Filter Section -------- */}
-        <div className="w-[30%] flex flex-col mr-3">
+        <div className="w-full lg:w-[30%] flex flex-row lg:flex-col mr-3">
           {/* Clear Filters Button */}
           <button
             onClick={() => {
@@ -128,15 +127,17 @@ const Allproduct = () => {
               setSelectedColors([]);
               setSelectedSizes([]);
             }}
-            className="mb-4 p-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-700"
+            className="mb-4 p-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-700 w-fit h-fit lg:w-full"
           >
-            Clear All Filters
+            <span className="hidden lg:block">Clear All Filters</span>
+            <span className="block lg:hidden">Clear</span>
           </button>
 
           {/* Price Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3 mb-2">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 mb-2 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Price</h1>
+              <h1 className="hidden lg:block">Filter by Price</h1>
+              <h1 className="block lg:hidden"> Price</h1>
               <button
                 onClick={() =>
                   setcoloropen(false) ||
@@ -175,9 +176,11 @@ const Allproduct = () => {
           </div>
 
           {/* Color Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3 mb-2">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 mb-2 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Color</h1>
+              <h1 className="hidden lg:block">Filter by Color</h1>
+              <h1 className="block lg:hidden">Color</h1>
+
               <button
                 onClick={() =>
                   setsizeopen(false) ||
@@ -209,9 +212,10 @@ const Allproduct = () => {
           </div>
 
           {/* Size Filter Dropdown */}
-          <div className="border border-gray-400 px-4 py-3">
+          <div className="border border-gray-400 lg:px-4 lg:py-3 h-fit p-1">
             <div className="flex justify-between items-center font-semibold cursor-pointer">
-              <h1>Filter by Size</h1>
+              <h1 className="hidden lg:block">Filter by Size</h1>
+              <h1 className="block lg:hidden">Size</h1>
               <button
                 onClick={() =>
                   setcoloropen(false) ||
@@ -244,8 +248,8 @@ const Allproduct = () => {
         </div>
 
         {/* -------- Product Section -------- */}
-        <div className="w-[70%]">
-          <div className="grid grid-cols-3 gap-4">
+        <div className="w-full lg:w-[70%]">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {filterproducts.length === 0 ? (
               <h2 className="col-span-3 text-center text-xl font-semibold">
                 No products found.

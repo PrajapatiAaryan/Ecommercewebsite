@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getuser, userlogout } from "../redux/slices/authslice";
+import { toast } from "react-toastify";
 
 const Profilepage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -17,6 +18,7 @@ const Profilepage = () => {
   const handlelogout = () => {
     navigate("/");
     dispatch(userlogout());
+    toast("user logout successfull")
   };
 
   useEffect(() => {

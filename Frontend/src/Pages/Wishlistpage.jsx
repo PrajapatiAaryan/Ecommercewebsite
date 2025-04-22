@@ -13,7 +13,7 @@ const Wishlistpage = () => {
   useEffect(() => {
     dispatch(getwhishlist());
   }, []);
-  console.log(whishlist , "this is  whishlist ")
+  // console.log(whishlist , "this is  whishlist ")
 
       const handleremovefromwhishlist = (id)=>{
         dispatch(removefromwhishlist(id))

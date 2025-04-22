@@ -41,7 +41,7 @@ const Navbar = () => {
   // get products
   useEffect(() => {
     dispatch(getProducts());
-    dispatch(getcart())
+    dispatch(getcart());
   }, []);
 
   //  navigate functions
@@ -55,7 +55,6 @@ const Navbar = () => {
     dispatch(userlogout());
   };
 
-
   const handlesearch = (e) => {
     e.preventDefault();
     navigate(`/search/${search}`);
@@ -63,6 +62,8 @@ const Navbar = () => {
   };
 
   const handlecart = async () => {
+    const token = localStorage.getItem("token");
+    if(!token)return toast("login first")
     if (!opencart) {
       await dispatch(getcart());
     }
@@ -71,7 +72,12 @@ const Navbar = () => {
 
   const handlewhishlist = async () => {
     // dispatch(getwhishlist());
-    navigate("/profile/wishlist");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return toast("login first");
+    } else {
+      navigate("/profile/wishlist");
+    }
   };
   const handleprofile = async () => {
     navigate("/profile");
@@ -88,7 +94,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between md:px-6 py-4 max-w-7xl mx-auto px-2">
           {/* Logo */}
           <div className="flex pr-4">
-            <img src={logo} alt="logoimg" className="w-12" />
+            <img src={logo} alt="logoimg" className="w-12" onClick={()=>{
+              navigate('/')
+            }} />
           </div>
 
           {/* Navbar Links */}
@@ -234,8 +242,18 @@ const Navbar = () => {
                   </li>
                 ))}
                 <li className="text-black font-semibold">Western wear</li>
-                <li className="text-black cursor-pointer" onClick={() => handlemegamenu("Dresses", "women")}>Dresses</li>
-                <li className="text-black cursor-pointer" onClick={() => handlemegamenu("Jumpsuit", "women")}>Jumpsuit</li>
+                <li
+                  className="text-black cursor-pointer"
+                  onClick={() => handlemegamenu("Dresses", "women")}
+                >
+                  Dresses
+                </li>
+                <li
+                  className="text-black cursor-pointer"
+                  onClick={() => handlemegamenu("Jumpsuit", "women")}
+                >
+                  Jumpsuit
+                </li>
               </div>
               <div className="flex flex-col gap-5 list-none border-r border-gray-500 pr-3">
                 <li className="text-black font-semibold">Footwear</li>

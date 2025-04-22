@@ -209,7 +209,7 @@ const authslice = createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.isauthenticated = true;
-        // toast(action.payload.message);
+        toast(action.payload.message);
       })
       .addCase(userlogin.rejected, (state, action) => {
         state.status = "failed";
