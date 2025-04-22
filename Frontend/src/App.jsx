@@ -19,7 +19,7 @@ import Profilepage from './Pages/Profilepage'
 import Editprofile from './Pages/Editprofile'
 import Wishlistpage from './Pages/Wishlistpage'
 import Dashboard from './admin/Dashboard'
-import AddProduct from "./admin/Addproduct";
+import AddProduct from "./admin/AddProduct";
 import Getproduct from "./admin/Getproduct";
 import Paymentmethod from "./Pages/Paymentmethod";
 import Placeorder from "./Pages/Placeorder";
