@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const apiurl = "https://amart-wil3.onrender.com"
+// const apiurl = "http://localhost:4000"
+
+
 // Async thunk for adding a product
 export const addProduct = createAsyncThunk("product/addProduct", async (formData) => {
   const productData = new FormData();
@@ -12,7 +16,7 @@ export const addProduct = createAsyncThunk("product/addProduct", async (formData
     }
   });
 
-  const response = await axios.post("http://localhost:4000/product/addproduct", productData, {
+  const response = await axios.post(`${apiurl}/product/addproduct`, productData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
@@ -21,14 +25,15 @@ export const addProduct = createAsyncThunk("product/addProduct", async (formData
 
 //  Async thunk for fetching products
 export const getProducts = createAsyncThunk("product/getProducts", async () => {
-  const response = await axios.get("http://localhost:4000/product/getproduct");
+  const response = await axios.get(`${apiurl}/product/getproduct`);
+  console.log(response , "from redux get products")
   return response.data.products; // Ensure your backend response structure matches this
 });
 
 export const getdetailproduct = createAsyncThunk("product/detailproduct" , async()=>{
   const id = localStorage.getItem("id")
   if(!id)return null
-  const response = await axios.get(`http://localhost:4000/product/detailproduct/${id}`)
+  const response = await axios.get(`${apiurl}/product/detailproduct/${id}`)
   // console.log("this is from redux product slice",response.data.product)
   return response.data.product
 })
@@ -37,7 +42,7 @@ export const deleteproduct = createAsyncThunk(
   'product/deleteproduct',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:4000/product/deleteproduct/${id}`);
+      await axios.delete(`${apiurl}/product/deleteproduct/${id}`);
       return id; // Return only the ID of the deleted product
     } catch (error) {
       return rejectWithValue(error.response.data);

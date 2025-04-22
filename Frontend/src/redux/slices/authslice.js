@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-const APIURL = "http://localhost:4000";
+// const APIURL = "http://localhost:4000";
+const APIURL = "https://amart-wil3.onrender.com";
 
 export const usersignup = createAsyncThunk(
   "auth/signup",
@@ -45,7 +46,7 @@ export const forgotpassword = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/auth/sendotp`,
+        `${APIURL}/user/auth/sendotp`,
         { email }
       );
       return response.data;
