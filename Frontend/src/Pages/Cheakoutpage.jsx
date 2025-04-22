@@ -187,6 +187,8 @@ const Cheakoutpage = () => {
             </div>
 
             <div className="py-3">
+              {user?.user?.address?.length>=1 &&
+              
               <button
                 className="cursor-pointer flex justify-center items-center lg:px-5 lg:py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl p-2"
                 onClick={() => {
@@ -195,6 +197,7 @@ const Cheakoutpage = () => {
               >
                 Deliver Here
               </button>
+              }
             </div>
 
             {/* user address form */}

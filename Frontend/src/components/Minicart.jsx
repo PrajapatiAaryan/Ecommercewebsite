@@ -37,7 +37,7 @@ const Minicart = () => {
   // const cartItems = 
 
   return (
-    <div className="absolute top-16 lg:right-4 right-0 border border-black bg-white text-black h-fit w-fit z-10 flex flex-col gap-3 px-3 pb-3 ">
+    <div className="absolute top-16 lg:right-4 right-0 border border-black bg-white text-black h-fit w-fit z-50 flex flex-col gap-3 px-3 pb-3 ">
       <h1 className="text-lg">
         {cartItems.length > 0
           ? `You have ${cartItems.length} items in your cart`

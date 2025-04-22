@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const apiurl = "https://amart-wil3.onrender.com"
-// const apiurl = "http://localhost:4000"
+// const apiurl = "https://amart-wil3.onrender.com"
+const apiurl = "http://localhost:4000"
 
 
 // Async thunk for adding a product
