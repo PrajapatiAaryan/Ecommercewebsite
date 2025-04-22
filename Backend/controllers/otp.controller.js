@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Usermodel = require("../models/Usermodel");
 
 // Email Configuration
