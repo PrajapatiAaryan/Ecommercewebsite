@@ -86,12 +86,33 @@ const Allproduct = () => {
     window.scrollTo(0,0)
   };
 
-  const handleaddtowhishlist =(id, qty) => {
-    console.log("button is clicket whishlist")
-    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
-    setqty(1);
+  // const handleaddtowhishlist =(id, qty) => {
+  //   console.log("button is clicket whishlist")
+  //   dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+  //   window.location.reload();
+  //   setqty(1);
+  // };
+  
+  // whishlist handling
+  const handleaddtowhishlist = async (id, qty) => {
+    try {
+      console.log("button is clicked for wishlist");
+      const result = await dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+  
+      if (addtowhishlist.fulfilled.match(result)) {
+        setqty(1);
+        // Optionally show a toast or alert here
+        // toast.success("Item added to wishlist!");
+      } else {
+        // Optionally show error
+        // toast.error("Failed to add to wishlist.");
+        console.error("Failed to add to wishlist:", result.payload);
+      }
+    } catch (error) {
+      console.error("Error in handleaddtowhishlist:", error);
+    }
   };
+  
 
   return (
     <>

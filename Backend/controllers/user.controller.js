@@ -154,20 +154,14 @@ const adduserprofileimg = async (req, res) => {
     res.status(500).json({ message: "Add user profile image error", error });
   }
 };
-// const updateuserprofiledata = async(req,res)=>{
-//   const userid = req.user.id;
-//   try {
-//     const user = await Usermodel.findOne({userid});
-//     if(!user)return res.json({message:"user not found" });
-//     user.firstName=firstName;
-//     user.lastName = lastName;
-//     user.email =email;
-//     user.password =password;
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await Usermodel.find().select("-password"); // Exclude password for security
+    res.status(200).json({ message: "All users fetched successfully", users });
+  } catch (error) {
+    console.error("getAllUsers error", error);
+    res.status(500).json({ message: "Error fetching users", error });
+  }
+};
 
-//   } catch (error) {
-//     res.status(401).json({message:"updateuserprofiledata error" , error});
-//     console.log("update user profile error" , error)
-//   }
-// };
-
-module.exports = { usersignup, userlogin, userlogout,adduseraddress,edituseraddress,getuser ,deleteaddress ,adduserprofileimg};
+module.exports = { usersignup, userlogin, userlogout,adduseraddress,edituseraddress,getuser ,deleteaddress ,adduserprofileimg ,getAllUsers};

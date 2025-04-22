@@ -27,6 +27,7 @@ import Myorder from "./Pages/Myorder";
 import Filterproductpage from "./Pages/Filterproductpage";
 import Orderslist from "./admin/Orderslist";
 import Filtersubcategorypage from "./Pages/Filtersubcategorypage";
+import FirstPagecontent from "./admin/FirstPagecontent";
 function App() {
   
   return (
@@ -58,7 +59,7 @@ function App() {
 
           
           <Route path="/admin" element={<Dashboard />}>
-            <Route index element={<h1>Welcome to Admin Dashboard</h1>} />
+            <Route index element={<FirstPagecontent/>} />
             <Route path="add-product" element={<AddProduct />} />
             <Route path="products" element={<Getproduct />} />
             <Route path="order" element={<Orderslist />} />

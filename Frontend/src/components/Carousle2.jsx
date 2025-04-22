@@ -8,34 +8,41 @@ const items = [
   {
     id: 1,
     img: "/images/u1.jpeg",
-    para: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.Earum officiis inesciunt consequuntur excepturi, expedita facilis harum, quos molestias culpa itaque alias. Illo,voluptate!`,
+    para: `Absolutely love shopping here! The website is easy to navigate and the product quality is top-notch. Fast delivery and helpful customer support make it my go-to platform.`,
     name: "Virat Kohli",
   },
   {
     id: 2,
     img: "/images/u2.jpeg",
-    para: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.Earum officiis inesciunt consequuntur excepturi, expedita facilis harum, quos molestias culpa itaque alias. Illo,voluptate!`,
+    para: `The variety of products available is impressive. I ordered shoes and they fit perfectly. Delivery was quick and hassle-free. Totally worth it!`,
     name: "Chris Gayle",
   },
   {
     id: 3,
     img: "/images/u3.jpeg",
-    para: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.Earum officiis inesciunt consequuntur excepturi, expedita facilis harum, quos molestias culpa itaque alias. Illo,voluptate!`,
-    name: "Ab De villiers",
+    para: `I've had a great experience every time I shop here. Products arrive on time, in perfect condition. Their return policy is fair and smooth too.`,
+    name: "Ab De Villiers",
   },
   {
     id: 4,
-    img: "/images/u1.jpeg",
-    para: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.Earum officiis inesciunt consequuntur excepturi, expedita facilis harum, quos molestias culpa itaque alias. Illo,voluptate!`,
-    name: "Virat Kohli",
+    img: "/images/u4.webp",
+    para: `Absolutely love shopping here! The website is easy to navigate and the product quality is top-notch. Fast delivery make it my go-to platform.`,
+    name: "Rohit Sharma",
   },
   {
     id: 5,
-    img: "/images/u2.jpeg",
-    para: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.Earum officiis inesciunt consequuntur excepturi, expedita facilis harum, quos molestias culpa itaque alias. Illo,voluptate!`,
-    name: "Chris Gayle",
+    img: "/images/u5.webp",
+    para: `I've had a great experience every time I shop here. Products arrive on time, in perfect condition. Their return policy is fair and smooth too.`,
+    name: "Ms Dhoni",
+  },
+  {
+    id: 6,
+    img: "/images/u6.avif",
+    para: `This site never disappoints. The user experience, quality of items, and delivery speed are always top class. Highly recommended for anyone shopping online.`,
+    name: "Sachin Tendulkar",
   },
 ];
+
 
 const Carousle2 = () => {
   const swiperDesktopRef = useRef(null);
@@ -60,7 +67,7 @@ const Carousle2 = () => {
   };
 
   return (
-    <div className="w-full flex-col items-center px-2 lg:px-20 pt-10 overflow-hidden">
+    <div className="w-full flex-col items-center px-2 lg:px-20 pt-10 overflow-hidden ">
       {/* Heading and Navigation Buttons */}
       <div className="flex justify-between items-center px-3 lg:pb-10">
         <h1 className="text-2xl lg:text-3xl font-semibold">
@@ -98,7 +105,7 @@ const Carousle2 = () => {
         >
           {items.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-col justify-center gap-3 bg-white rounded-2xl px-3 py-3 h-fit">
+              <div className="flex flex-col justify-center gap-3 bg-white rounded-2xl px-3 py-3 h-fit shadow-xl shadow-gray-100">
                 <h1>⭐⭐⭐⭐⭐</h1>
                 <p>{item.para}</p>
                 <div className="flex gap-5 pt-5">

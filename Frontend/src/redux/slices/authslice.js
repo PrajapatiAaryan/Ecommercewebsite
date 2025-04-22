@@ -158,12 +158,28 @@ export const updateProfileImage = createAsyncThunk(
     }
   }
 );
+
+export const getAllUsers = createAsyncThunk(
+  "auth/getAllUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${APIURL}/user/getallusers`);
+      return response.data; // expected to be an array of users
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch users"
+      );
+    }
+  }
+);
+
 // intial state
 const initialState = {
   user: null,
   isauthenticated: false,
   status: "idle",
   error: null,
+  allUsers: [],
 };
 
 const authslice = createSlice({
@@ -252,6 +268,18 @@ const authslice = createSlice({
       })
       .addCase(deleteaddress.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.allUsers = action.payload;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+        toast(action.payload);
       });
   },
 });

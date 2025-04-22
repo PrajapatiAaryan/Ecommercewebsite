@@ -63,12 +63,14 @@ const Navbar = () => {
   };
 
   const handlecart = async () => {
-    dispatch(getcart())
+    if (!opencart) {
+      await dispatch(getcart());
+    }
     setopencart(!opencart);
   };
 
   const handlewhishlist = async () => {
-    dispatch(getwhishlist());
+    // dispatch(getwhishlist());
     navigate("/profile/wishlist");
   };
   const handleprofile = async () => {
@@ -82,7 +84,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="border border-black w-full bg-white">
+      <nav className="border border-gray-200 rounded-2xl shadow-xl shadow-gray-50 sticky  w-full bg-white">
         <div className="flex items-center justify-between md:px-6 py-4 max-w-7xl mx-auto px-2">
           {/* Logo */}
           <div className="flex pr-4">
@@ -106,7 +108,7 @@ const Navbar = () => {
           </div>
 
           <form
-            className="w-[60%] border border-black flex items-center px-3 rounded-full"
+            className="w-[60%] border border-gray-400 flex items-center px-3 rounded-full"
             onSubmit={(e) => handlesearch(e)}
           >
             <input

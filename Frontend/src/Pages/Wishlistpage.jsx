@@ -13,34 +13,35 @@ const Wishlistpage = () => {
   useEffect(() => {
     dispatch(getwhishlist());
   }, []);
-  console.log(whishlist)
+  console.log(whishlist , "this is  whishlist ")
 
       const handleremovefromwhishlist = (id)=>{
         dispatch(removefromwhishlist(id))
-        window.location.reload()
+        // dispatch(getwhishlist())
       }
       const handleoneproductpage =async(id)=>{
         // console.log(id)
         localStorage.setItem("id", id)
         navigate(`/details`)
       }
-      
   return (
     <>
       <div className="">
+                {whishlist?.items?.length >= 1?        
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {whishlist[0]?.whishlist?.items?.map((item ,idx) => (
+                {whishlist?.items?.map((item ,idx) => (
                   <div
                     key={idx}
                     className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
-                    onClick={()=>handleoneproductpage(item.productid._id)}
+                    
                   >
                     {/* Image Section */}
                     <div className="relative w-full h-60 flex justify-center items-center">
                       <img
                         src={item.productid.image}
                         alt="product"
-                        className="w-full h-full object-contain rounded-lg"
+                        className="w-full h-full object-contain rounded-lg cursor-pointer"
+                        onClick={()=>handleoneproductpage(item.productid._id)}
                       />
 
                       {/* Hover Icons (Visible on Hover) */}
@@ -70,7 +71,9 @@ const Wishlistpage = () => {
                   </div>
                 ))}
               </div>
-              
+              :<div className="flex justify-center items-center text-green-500 text-2xl">
+                 <h1>there is no product in your whishlist go now shop
+                  </h1></div>}
             </div>
     </>
   );

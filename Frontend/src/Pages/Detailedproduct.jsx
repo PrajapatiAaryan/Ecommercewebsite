@@ -27,13 +27,34 @@ const DetailedProduct = () => {
     setqty(value);
   };
 
+ 
+  // add to cart function
   const handleaddtocart = async (id, qty) => {
-    dispatch(addtocart({ productid: id, quantity: Number(qty) ,color:selcetedcolor ,size:selectedsize}))
-    alert("item is added to cart")
-    // dispatch(getcart()); // Refresh cart in Redux after adding
-    window.location.reload();
-    setqty(1);
+    try {
+      const result = await dispatch(
+        addtocart({
+          productid: id,
+          quantity: Number(qty),
+          color: selcetedcolor,
+          size: selectedsize,
+        })
+      );
+  
+      if (addtocart.fulfilled.match(result)) {
+        await dispatch(getcart()); // This updates the cart in Redux
+        toast("item is added to cart")
+        setqty(1);
+      } else {
+        toast(result.payload?.message || "Failed to add to cart");
+      }
+    } catch (error) {
+      toast("please select color and size of your product ");
+      console.error(error);
+    }
   };
+  
+
+
 
   const handleaddtowhishlist = async (id, qty) => {
     dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }))

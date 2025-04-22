@@ -99,6 +99,25 @@ export const clearcart =createAsyncThunk(
   }
 );
 
+export const increseqty = createAsyncThunk(
+  "cart/increseqty" , async(id ,rejectWithValue)=>{
+    const token  = localStorage.getItem('token')
+    console.log("this is increse qty token" , token)
+    try {
+      const response = await axios.put(`${APIURL}/cart/increseqty/${id}` , {
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${token}`
+        }
+      })
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+
 
 const cartslice = createSlice({
   name: "cart",
@@ -115,9 +134,8 @@ const cartslice = createSlice({
       })
       .addCase(addtocart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart.push(action.payload);
-        // toast("item added to cart successfullly");
-      })
+        state.cart = [action.payload]; // ✅ Replace the cart completely
+      })      
       .addCase(addtocart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
@@ -125,9 +143,9 @@ const cartslice = createSlice({
       .addCase(getcart.pending , (state)=>{
         state.loading = true;
       })
-      .addCase(getcart.fulfilled , (state ,action)=>{
+      .addCase(getcart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart.push(action.payload);
+        state.cart = [action.payload]; // ✅ Replace the cart completely
       })
       .addCase(getcart.rejected ,(state,action)=>{
         state.loading = false;
@@ -138,6 +156,10 @@ const cartslice = createSlice({
         toast(action.payload.message)
       })
       .addCase(decreseqty.fulfilled , (state,action)=>{
+        state.loading = false;
+        toast(action.payload.message)
+      })
+      .addCase(increseqty.fulfilled , (state,action)=>{
         state.loading = false;
         toast(action.payload.message)
       })

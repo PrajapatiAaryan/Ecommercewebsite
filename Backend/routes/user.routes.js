@@ -1,5 +1,5 @@
 const express = require("express")
-const { usersignup, userlogin, userlogout, adduseraddress, edituseraddress, getuser, deleteaddress, adduserprofileimg } = require("../controllers/user.controller")
+const { usersignup, userlogin, userlogout, adduseraddress, edituseraddress, getuser, deleteaddress, adduserprofileimg, getAllUsers } = require("../controllers/user.controller")
 const protect = require("../middleware/authmiddleware")
 const verifytoken = require('../middleware/verifytokenmiddleware')
 const upload = require("../middleware/uploadmiddleware");
@@ -9,6 +9,7 @@ const router = express.Router()
 router.post('/signup' , usersignup)
 router.post('/login' ,userlogin)
 router.post('/logout', userlogout)
+router.get('/getallusers' ,getAllUsers)
 router.post('/addaddress', verifytoken , adduseraddress)
 router.get('/getuser' , verifytoken , getuser);
 router.post('/editaddress/:id' , verifytoken ,edituseraddress)

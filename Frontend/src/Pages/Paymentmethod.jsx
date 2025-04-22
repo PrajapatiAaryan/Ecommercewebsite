@@ -43,7 +43,7 @@ const Paymentmethod = () => {
 
   const [selectedOption, setSelectedOption] = useState("");
 
-  const options = ["Cash On Delivery", "Pay Now", "Udhar"];
+  const options = ["Cash On Delivery", "Pay Now"];
   const handlecontinue = () => {
     localStorage.setItem("paymentmethod", selectedOption);
     navigate("/placeorder");

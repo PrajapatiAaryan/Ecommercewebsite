@@ -9,7 +9,7 @@ const Minicart = () => {
   const dispatch = useDispatch();
   const [carttotalprice, setcarttotalprice] = useState(0);
   const navigate = useNavigate();
-  const [cartItems, setcartItems] = useState(cart[0]?.cart?.items || [])
+  const cartItems = cart[0]?.cart?.items || [];
   useEffect(() => {
     dispatch(getcart());
   }, [dispatch]);
@@ -23,9 +23,9 @@ const Minicart = () => {
     }
   }, [cart]);
 
-  const handledelete = (product) => {
-    dispatch(removecartitems(product._id));
-    window.location.reload()
+  const handledelete = async (product) => {
+    await dispatch(removecartitems(product._id));
+    await dispatch(getcart()); // refresh after removal
   };
 
   const viewcart = () => {

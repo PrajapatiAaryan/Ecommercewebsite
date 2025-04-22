@@ -33,6 +33,17 @@ export const getdetailproduct = createAsyncThunk("product/detailproduct" , async
   return response.data.product
 })
 
+export const deleteproduct = createAsyncThunk(
+  'product/deleteproduct',
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`http://localhost:4000/product/deleteproduct/${id}`);
+      return id; // Return only the ID of the deleted product
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const productSlice = createSlice({
   name: "product",
   initialState: {
@@ -75,6 +86,12 @@ const productSlice = createSlice({
       .addCase(getdetailproduct.fulfilled,(state ,action)=>{
         state.loading =false;
         state.detailproduct = action.payload
+      })
+
+      // delete product
+      .addCase(deleteproduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = state.products.filter((product) => product._id !== action.payload);
       })
   },
 });

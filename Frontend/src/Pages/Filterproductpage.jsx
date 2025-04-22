@@ -78,11 +78,23 @@ const Filterproductpage = () => {
   };
 
  
-  const handleaddtowhishlist = async(id ,qty)=>{
-           dispatch(addtowhishlist({productid:id ,quantity:Number(qty)}))
-           window.location.reload()
-           setqty(1)
-       }  
+  const handleaddtowhishlist = async (id, qty) => {
+    try {
+      const result = await dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+  
+      if (addtowhishlist.fulfilled.match(result)) {
+        setqty(1);
+        // Optional: show a message
+        // toast.success("Item added to wishlist!");
+      } else {
+        console.error("Failed to add to wishlist:", result.payload);
+        // Optional: show error
+        // toast.error("Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error in handleaddtowhishlist:", error);
+    }
+  };
   
        
   return (

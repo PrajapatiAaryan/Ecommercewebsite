@@ -44,8 +44,8 @@ const Myorder = () => {
                 productDetails: response.data.product,
                 quantity: item.quantity,
                 price: item.price,
-                size:item.size,
-                color:item.color,
+                size: item.size,
+                color: item.color,
               };
             })
           );
@@ -69,13 +69,13 @@ const Myorder = () => {
 
   const location = useLocation();
 
-useEffect(() => {
+  useEffect(() => {
     const query = new URLSearchParams(location.search);
     const status = query.get("status");
 
     if (status === "success") {
       toast.success("Order placed successfully 🎉");
-      dispatch(clearcart())
+      dispatch(clearcart());
     } else if (status === "failed") {
       toast.error("Payment failed. Order not placed ❌");
     }
@@ -87,77 +87,60 @@ useEffect(() => {
     }
   }, [location, navigate]);
 
+  console.log("this is length of ordes array i guess");
 
-  
   return (
     <>
       <div className="flex flex-col gap-7 h-[70vh] overflow-scroll no-scrollbar">
-        {/* {whishlist[0]?.whishlist?.items?.map((item, idx) => (
-          <div key={idx} className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-3">
-                <div>
-                  <img src={item.productid.image} alt="img"  className="w-20 h-20"/>
+        {orderproduct?.length >= 1 ? (
+          <div>
+            {orderproduct.map((order) => (
+              <div
+                key={order._id}
+                className="border p-4 mb-5 border-gray-200 shadow-xl shadow-gray-100 rounded-2xl"
+              >
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold">Order ID: {order._id}</h2>
+                  <span className="text-sm text-green-600">
+                    {order.orderStatus}
+                  </span>
                 </div>
-                <div>
-                  <h1>{item.productid.title}</h1>
-                  <h1>Size:l</h1>
-                  <h1>qty:1</h1>
-                </div>
-              </div>
-              <div>
-                <h1>${item.productid.offerPrice}</h1>
-              </div>
-              <div className="flex flex-col gap-4">
-                <button className="border border-gray-500 text-black bg-white rounded-xl px-4 py-2 flex justify-center items-center cursor-pointer">
-                  View Order
-                </button>
-                <button className="border border-gray-500 text-white bg-black rounded-xl px-4 py-2 flex justify-center items-center cursor-pointer">
-                  Write a Review
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <h1 className="bg-gray-200 text-green-400 border border-gray-200 rounded-xl px-4 py-2 flex justify-center items-center text-xl">
-                Delivered
-              </h1>
-              <p>Your Prodcut Has Been Deliverd</p>
-            </div>
-          </div>
-        ))} */}
+                <p>Payment Status: {order.paymentStatus}</p>
+                <p>Total: ₹{order.totalAmount}</p>
 
-        {/* order details */}
-        {orderproduct.map((order) => (
-          <div key={order._id} className="border p-4 mb-5 border-gray-200 shadow-xl shadow-gray-100 rounded-2xl">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">Order ID: {order._id}</h2>
-              <span className="text-sm text-green-600">
-                {order.orderStatus}
-              </span>
-            </div>
-            <p>Payment Status: {order.paymentStatus}</p>
-            <p>Total: ₹{order.totalAmount}</p>
-
-            <div className="grid md:grid-cols-2 gap-4 mt-4">
-              {order.items.map((item, idx) => (
-                <div key={idx} className="flex gap-3 border p-3 rounded-2xl border-gray-200 shadow shadow-gray-200">
-                  <img
-                    src={item.productDetails.image}
-                    alt={item.productDetails.title}
-                    className="w-20 h-20 object-cover"
-                  />
-                  <div>
-                    <h3 className="font-semibold">
-                      {item.productDetails.title}
-                    </h3>
-                    <p>Qty: {item.quantity}</p>
-                    <p>Price: ₹{item.price}</p>
-                  </div>
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                  {order.items.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex gap-3 border p-3 rounded-2xl border-gray-200 shadow shadow-gray-200"
+                    >
+                      <img
+                        src={item.productDetails.image}
+                        alt={item.productDetails.title}
+                        className="w-20 h-20 object-cover"
+                      />
+                      <div>
+                        <h3 className="font-semibold">
+                          {item.productDetails.title}
+                        </h3>
+                        <p>Qty: {item.quantity}</p>
+                        <p>Price: ₹{item.price}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          <div className="flex justify-center items-center text-2xl text-green-500 h-1/2 px-20">
+            <h1>
+              you does not order anythin go and order now in first order you can
+              get 70% off by using coupen{" "}
+              <span className="text-2xl text-blue-600">new70</span>
+            </h1>
+          </div>
+        )}
       </div>
     </>
   );

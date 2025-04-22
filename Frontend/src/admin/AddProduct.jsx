@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/slices/productslice"; // Adjust the path as needed
+import { toast } from "react-toastify";
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(addProduct(formData));
+    toast("product is added")
   };
 
   return (

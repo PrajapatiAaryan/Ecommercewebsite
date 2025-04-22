@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getdetailproduct, getProducts } from "../redux/slices/productslice";
 import { useNavigate } from "react-router-dom";
+import { addtowhishlist } from "../redux/slices/whishlistslice";
 
 const RelatedProducts = () => {
   const { detailproduct, products } = useSelector((state) => state.product);
@@ -22,7 +23,26 @@ const RelatedProducts = () => {
       navigate('/details')
       window.location.reload()
       window.scrollTo(0,0)
+      
     } 
+
+    const handleaddtowhishlist = async (id, qty) => {
+      try {
+        const result = await dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
+    
+        if (addtowhishlist.fulfilled.match(result)) {
+          setqty(1);
+          // Optional: show a message
+          // toast.success("Item added to wishlist!");
+        } else {
+          console.error("Failed to add to wishlist:", result.payload);
+          // Optional: show error
+          // toast.error("Something went wrong.");
+        }
+      } catch (error) {
+        console.error("Error in handleaddtowhishlist:", error);
+      }
+    };
     
 
   return (
@@ -35,25 +55,26 @@ const RelatedProducts = () => {
               <div
                 key={item._id}
                 className="relative rounded-xl cursor-pointer group overflow-hidden bg-gray-50 p-6  transition-all duration-300"
-                onClick={()=>handleoneproductpage(item._id)}
+                
               >
                 {/* Image Section */}
                 <div className="relative w-full h-60 flex justify-center items-center">
                   <img
                     src={item.image}
                     alt="product"
-                    className="w-full h-full object-contain rounded-lg"
+                    className="w-full h-full object-contain rounded-lg cursor-pointer"
+                    onClick={()=>handleoneproductpage(item._id)}
                   />
 
                   {/* Hover Icons (Visible on Hover) */}
                   <div className="absolute top-3 right-3 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
+                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"onClick={()=>handleaddtowhishlist(item._id)}>
                       favorite
                     </span>
                     <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
                       compare_arrows
                     </span>
-                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200">
+                    <span className="material-icons-outlined p-3 bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-200 cursor-pointer" onClick={()=>handleoneproductpage(item._id)}>
                       visibility
                     </span>
                   </div>

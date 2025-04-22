@@ -35,13 +35,26 @@ const Homepage = () => {
     window.scrollTo(0, 0);
   };
   const handleaddtowhishlist = async (id, qty) => {
-    dispatch(addtowhishlist({ productid: id, quantity: Number(qty) }));
-    window.location.reload();
-    setqty(1);
+    try {
+      const result = await dispatch(
+        addtowhishlist({ productid: id, quantity: Number(qty) })
+      );
+
+      if (addtowhishlist.fulfilled.match(result)) {
+        setqty(1);
+        // Optional: show a message
+        // toast.success("Item added to wishlist!");
+      } else {
+        console.error("Failed to add to wishlist:", result.payload);
+        // Optional: show error
+        // toast.error("Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error in handleaddtowhishlist:", error);
+    }
   };
 
-
-  // thsi is for toast of success 
+  // thsi is for toast of success
   const location = useLocation();
 
   useEffect(() => {
@@ -61,9 +74,38 @@ const Homepage = () => {
     }
   }, [location, navigate]);
 
+
+  // scroll to top functions 
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowButton(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <>
       <Navbar />
+      {/* scroll top button */}
+      <div className="relative">
+      {/* Scroll to Top Button */}
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-blue-400 hover:bg-blue-700 text-white px-7 py-5 rounded-full shadow-lg transition-all duration-300 z-50"
+        >
+          ↑ Top
+        </button>
+      )}
+    </div>
 
       <HomeCarousel />
       <Carousle />
@@ -218,12 +260,12 @@ const Homepage = () => {
                   Deals of the Month
                 </h1>
                 <p className="text-sm lg:text-xl text-gray-900  ">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Aliquam delectus quidem, sab ex maiores magni. Eius enim
-                  tempore nostrum quia quasi?quidem, sab ex maiores magni. Eius
-                  enim tempore nostrum quia quasi?quidem, sab ex maiores magni.
-                  Eius enim tempore nostrum quia quasi?quidem, sab ex maiores
-                  magni. Eius enim tempore nostrum quia quasi?
+                  Discover amazing deals on top-rated products this month.
+                  Exclusive discounts await, with savings on the biggest brands.
+                  Don’t miss your chance to grab premium items at the lowest
+                  prices. Quality, value, and limited-time offers you can’t
+                  resist. Act fast, stock is limited. Experience seamless
+                  shopping and unbeatable value now!
                 </p>
                 <div className="py-2 ">
                   <CountdownTimer />

@@ -78,7 +78,7 @@ const Orderslist = () => {
     <div>
       <div className="flex flex-col gap-7 h-[90vh] overflow-scroll no-scrollbar">
         {orderproduct.map((order) => (
-          <div key={order._id} className="border p-4 mb-5 rounded">
+          <div key={order._id} className="border p-4 mb-5 rounded-2xl border-gray-200 shadow-xl shadow-gray-50">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Order ID: {order._id}</h2>
               <span className="text-sm text-green-600">
@@ -133,7 +133,7 @@ const Orderslist = () => {
             {/* Order Items */}
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               {order.items.map((item, idx) => (
-                <div key={idx} className="flex gap-3 border p-3 rounded">
+                <div key={idx} className="flex gap-3 border border-gray-200 rounded-2xl p-3 shadow-xl shadow-gray-50">
                   <img
                     src={item.productDetails.image}
                     alt={item.productDetails.title}

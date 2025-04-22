@@ -120,7 +120,7 @@ const Placeorder = () => {
     dispatch(placedorder(orderData));
     dispatch(clearcart());
     toast("Order placed successfully 🤩");
-    navigate("/");
+    navigate("/profile/myorders");
   };
 
   return (

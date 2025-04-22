@@ -1,31 +1,55 @@
 const Cart = require("../models/Cartmodel");
 
 const addtocart = async (req, res) => {
-  const { productid, quantity ,size,color } = req.body;
-  const userid = req.user.id;
-  // console.log(req.body)
-  // console.log({userid,productid, quantity })
   try {
+    const { productid, quantity, size, color } = req.body;
+    const userid = req.user.id;
+
+    // Validation
+    if (!productid || !quantity || !size || !color) {
+      return res.status(400).json({
+        success: false,
+        message: "productid, quantity, size, and color are required",
+      });
+    }
+
+    // Find or create cart
     let cart = await Cart.findOne({ userid });
     if (!cart) {
       cart = new Cart({ userid, items: [] });
     }
-    const existingitem = cart.items.find(
-      (item) => item.productid.toString() === productid
+
+    // Check if item with same productid, size, and color already exists
+    const existingItem = cart.items.find(
+      (item) =>
+        item.productid.toString() === productid &&
+        item.size === size &&
+        item.color === color
     );
 
-    if (existingitem) {
-      existingitem.quantity += quantity;
+    if (existingItem) {
+      existingItem.quantity += quantity;
     } else {
-      cart.items.push({ productid, quantity ,size ,color });
+      cart.items.push({ productid, quantity, size, color });
     }
+
     await cart.save();
-    res.status(200).json({ messge: "product is added to cart", cart });
+
+    return res.status(200).json({
+      success: true,
+      message: "Product added to cart successfully",
+      cart,
+    });
   } catch (error) {
-    res.status(201).json({ message: "addtocart error", error });
-    console.log("addtocart error", error);
+    console.error("Add to cart error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while adding to cart",
+      error: error.message,
+    });
   }
 };
+
 
 const getcart = async (req, res) => {
   const userid = req.user.id;
@@ -84,6 +108,31 @@ const decreseqty = async (req, res) => {
     console.log("decreseqty error", error);
   }
 };
+const increseqty = async(req,res)=>{
+  console.log("this req.user.id" , req.user.id)
+  const userid = req.user.id;
+  const productid = req.params.id;
+  try {
+    const cart = await Cart.findOne({ userid });
+    if (!cart) return res.status(201).json({ message: "cart not found" });
+    const itemindex = cart.items.findIndex(
+      (item) => item.productid.toString() === productid
+    );
+
+    if (itemindex === -1) {
+      return res.json({ message: "item is not in cart" });
+    }
+     
+    console.log("itemindex = " , itemindex)
+      cart.items[itemindex].quantity += 1;
+    await cart.save();
+    res.status(200).json({message:"item qty is incresed" , cart})
+
+  } catch (error) {
+    res.status(201).json({ message: "incresed qty eerror error", error });
+    console.log("increse qty  error", error);
+  }
+}
 
 const clearcart = async(req,res)=>{
   const userId = req.user.id;
@@ -100,4 +149,4 @@ const clearcart = async(req,res)=>{
   }
 }
 
-module.exports = { addtocart, getcart, removefromcart, decreseqty ,clearcart};
+module.exports = { addtocart, getcart, removefromcart, decreseqty ,clearcart ,increseqty};
