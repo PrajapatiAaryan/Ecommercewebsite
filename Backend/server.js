@@ -19,6 +19,8 @@ app.use(cookieparser())
 // database connection
 connectDB()
 
+const PORT = process.env.PORT || 4000;
+
 app.use('/uploads', express.static('public/uploads'));
 // routes handling
 app.use('/user' , userroutes)
@@ -40,6 +42,6 @@ app.get("/", (req,res)=>{
 
 
 
-app.listen(4000, ()=>{
+app.listen(PORT, ()=>{
   console.log(`server is listing on http:/localhost:4000`)
 })
