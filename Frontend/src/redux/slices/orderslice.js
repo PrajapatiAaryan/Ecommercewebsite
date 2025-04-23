@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const APIURL = "http://localhost:4000";
-// const APIURL = "https://amart-wil3.onrender.com";
+// const APIURL = "http://localhost:4000";
+const APIURL = "https://amart-wil3.onrender.com";
 
 export const placedorder = createAsyncThunk(
   "order/placeorder",
