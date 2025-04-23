@@ -41,14 +41,7 @@ const Editprofile = () => {
   };
 
   return (
-    <div className="w-full py-6 flex flex-col gap-8 relative ">
-      {/* Top Right Edit Button */}
-      {/* <div className="absolute top-20 right-20">
-        <button className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl shadow-md text-lg hover:bg-gray-800 transition duration-200">
-          <FaEdit />
-          Edit
-        </button>
-      </div> */}
+    <div className="w-full py-6 flex flex-col gap-8  ">
 
       {/* Profile Picture Section */}
       <div className="relative w-36 h-36 md:w-40 md:h-40 mx-auto">
@@ -82,7 +75,7 @@ const Editprofile = () => {
       </div>
 
       {/* Edit Info Section */}
-      <div className="w-full max-w-5xl mx-auto bg-white border border-gray-300 p-6 rounded-xl shadow-md">
+      <div className="w-full max-w-5xl mx-auto bg-white border border-gray-300 p-6 rounded-xl shadow-md  ">
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label className="text-sm mb-1 text-gray-600">First Name</label>

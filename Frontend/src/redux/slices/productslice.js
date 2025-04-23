@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const apiurl = "https://amart-wil3.onrender.com"
-// const apiurl = "http://localhost:4000"
+// const apiurl = "https://amart-wil3.onrender.com"
+const apiurl = "http://localhost:4000"
 
 
 // Async thunk for adding a product
@@ -26,7 +26,7 @@ export const addProduct = createAsyncThunk("product/addProduct", async (formData
 //  Async thunk for fetching products
 export const getProducts = createAsyncThunk("product/getProducts", async () => {
   const response = await axios.get(`${apiurl}/product/getproduct`);
-  console.log(response , "from redux get products")
+  // console.log(response , "from redux get products")
   return response.data.products; // Ensure your backend response structure matches this
 });
 

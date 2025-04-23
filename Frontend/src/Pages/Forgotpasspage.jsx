@@ -15,12 +15,24 @@ const Forgotpasspage = () => {
     navigate("/login");
   };
 
+  const isValidEmail = (email) => {
+    // Regular expression for validating an email
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
   const handlesubmit = async (e) => {
     e.preventDefault();
     if (email.trim() === "") {
       alert("Please enter your email");
       return;
     }
+
+    if (!isValidEmail(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
     await dispatch(forgotpassword(email));
   };
 

@@ -87,11 +87,10 @@ const Myorder = () => {
     }
   }, [location, navigate]);
 
-  console.log("this is length of ordes array i guess");
 
   return (
     <>
-      <div className="flex flex-col gap-7 h-[70vh] overflow-scroll no-scrollbar">
+      <div className=" flex flex-col gap-7 h-[70vh] overflow-scroll no-scrollbar">
         {orderproduct?.length >= 1 ? (
           <div>
             {orderproduct.map((order) => (

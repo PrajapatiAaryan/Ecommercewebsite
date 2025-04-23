@@ -30,6 +30,7 @@ const Cheakoutpage = () => {
     () => Number(localStorage.getItem("cartTotal")) || 0
   );
   const targetRef = useRef(null);
+  const checkboxRefs = useRef({});
   useEffect(() => {
     dispatch(getcart());
     dispatch(getuser());
@@ -54,17 +55,48 @@ const Cheakoutpage = () => {
     state: "",
     pincode: "",
   });
+  const [errors, setErrors] = useState({});
   const [selectedAddressId, setSelectedAddressId] = useState(
     localStorage.getItem("selectedAddressId") || ""
   );
   const handlechange = (e) => {
     const { name, value } = e.target;
     setaddressdata({ ...addressdata, [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+
+
+  // this is address form validator 
+  const validate = () => {
+    const newErrors = {};
+  
+    if (!addressdata.fullName.trim()) newErrors.fullName = "Full name is required.";
+    if (!addressdata.phone.trim()) newErrors.phone = "Phone number is required.";
+    else if (!/^\d{10}$/.test(addressdata.phone)) newErrors.phone = "Phone number must be 10 digits.";
+  
+    if (!addressdata.address.trim()) newErrors.address = "Address is required.";
+    else if (addressdata.address.length < 10) newErrors.address = "Address must be at least 10 characters.";
+  
+    if (!addressdata.city.trim()) newErrors.city = "City is required.";
+  
+    if (!addressdata.pincode.trim()) newErrors.pincode = "Pincode is required.";
+    else if (!/^\d{6}$/.test(addressdata.pincode)) newErrors.pincode = "Pincode must be 6 digits.";
+  
+    if (!addressdata.state.trim()) newErrors.state = "State is required.";
+  
+    setErrors(newErrors);
+  
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handlesubmit = (e) => {
     e.preventDefault();
+    if (!validate()) {
+      return; 
+    }
+  
     dispatch(addaddress(addressdata));
-    // console.log(addressdata);
+    dispatch(getuser());
     setaddressdata({
       fullName: "",
       phone: "",
@@ -101,6 +133,7 @@ const Cheakoutpage = () => {
     setSelectedAddressId(id);
     localStorage.setItem("selectedAddressId", id);
   };
+
   return (
     <>
       <Navbar />
@@ -144,7 +177,7 @@ const Cheakoutpage = () => {
             </div>
             {/* user fetched address */}
             <div className="w-full flex lg:gap-8 gap-3 flex-col lg:flex-row">
-              {user?.user?.address.map((item, idx) => (
+              {user?.user?.address.slice(-2).map((item, idx) => (
                 <div
                   key={idx}
                   className="border border-gray-200 bg-gray-50 text-black lg:w-1/2 flex flex-col gap-3 px-3 lg:py-2"
@@ -153,9 +186,10 @@ const Cheakoutpage = () => {
                     {item.fullName}
                     <input
                       type="checkbox"
+                      ref={(el) => (checkboxRefs.current[item._id] = el)}
                       className="lg:w-6 lg:h-6 accent-black"
-                      checked ={selectedAddressId === item._id}
-                      onChange={()=>handleCheckboxChange(item._id)}
+                      checked={selectedAddressId === item._id}
+                      onChange={() => handleCheckboxChange(item._id)}
                     />
                   </h1>
                   <p className="text-black lg:text-xl px-3 pt-2">
@@ -187,17 +221,18 @@ const Cheakoutpage = () => {
             </div>
 
             <div className="py-3">
-              {user?.user?.address?.length>=1 &&
-              
-              <button
-                className="cursor-pointer flex justify-center items-center lg:px-5 lg:py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl p-2"
-                onClick={() => {
-                  navigate("/payment");
-                }}
-              >
-                Deliver Here
-              </button>
-              }
+              {user?.user?.address?.some(
+                (item) => checkboxRefs.current[item._id]?.checked
+              )&&(
+                <button
+                  className="cursor-pointer flex justify-center items-center lg:px-5 lg:py-3 text-xl text-white bg-black w-1/2 border border-gray-500 rounded-2xl p-2"
+                  onClick={() => {
+                    navigate("/payment");
+                  }}
+                >
+                  Deliver Here
+                </button>
+              )}
             </div>
 
             {/* user address form */}
@@ -212,6 +247,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
                 </div>
                 <div>
                   <label>Mobile no</label>
@@ -222,6 +258,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
                 <div>
                   <label>Enter Your Full address</label>
@@ -232,6 +269,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
                 </div>
                 <div>
                   <label>City</label>
@@ -242,6 +280,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
                 </div>
                 <div>
                   <label>Pincode</label>
@@ -252,6 +291,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.pincode && <p className="text-red-500 text-sm">{errors.pincode}</p>}
                 </div>
                 <div>
                   <label>State</label>
@@ -262,6 +302,7 @@ const Cheakoutpage = () => {
                     onChange={(e) => handlechange(e)}
                     className="outline-none w-full py-3 px-3 border border-black rounded-xl"
                   />
+                   {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
                 </div>
                 <button
                   className="lg:w-1/2 border-gray-500 bg-black text-white px-3 py-2 flex justify-center items-center rounded-xl cursor-pointer"

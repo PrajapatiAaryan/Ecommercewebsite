@@ -10,8 +10,6 @@ import { clearcart, getcart, removecartitems } from "../redux/slices/cartslice";
 import { getuser } from "../redux/slices/authslice";
 import { placedorder } from "../redux/slices/orderslice";
 import { toast } from "react-toastify";
-// import Pincode from "pincode-distance";
-// const pincode = new Pincode();
 const Placeorder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,10 +50,7 @@ const Placeorder = () => {
     }
   }, [user, id]);
 
-  const handleremovefromcart = (id) => {
-    dispatch(removecartitems(id));
-    window.location.reload();
-  };
+
 
   const orderItems = cart[0]?.cart?.items?.map((item) => ({
     productId: item.productid._id,
@@ -63,13 +58,7 @@ const Placeorder = () => {
     price: item.productid.offerPrice * item.quantity,
   }));
 
-  // pincode distance
-  // const distance = pincode.getDistance("390021", "390047");
-  // console.log(
-  //   `Distance between 390021 and 390047 is approximately ${distance.toFixed(
-  //     2
-  //   )} km.`
-  // );
+  
   const deliveryCharge = 21;
 
   const [enteredCoupen, setEnteredCoupen] = useState("");
