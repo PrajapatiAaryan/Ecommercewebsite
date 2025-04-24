@@ -33,11 +33,11 @@ const Myorder = () => {
   useEffect(() => {
     const fetchAllOrderProducts = async () => {
       const finalOrders = await Promise.all(
-        order?.order.map(async (ord) => {
-          const itemsWithDetails = await Promise.all(
+        order?.order?.map(async (ord) => {
+          const itemsWithDetails = await Promise?.all(
             ord.items.map(async (item) => {
               const response = await axios.get(
-                `http://localhost:4000/product/detailproduct/${item.productId}`
+                `https://amart-wil3.onrender.com/product/detailproduct/${item.productId}`
               );
 
               return {
@@ -87,7 +87,7 @@ const Myorder = () => {
     }
   }, [location, navigate]);
 
-
+  console.log("my orders are ", order)
   return (
     <>
       <div className=" flex flex-col gap-7 h-[70vh] overflow-scroll no-scrollbar">

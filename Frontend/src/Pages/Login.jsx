@@ -52,8 +52,8 @@ const Login = () => {
     }
     
     const response = await dispatch(userlogin(logindata));
-    console.log(response);
-    console.log(response.payload.message);
+    // console.log(response);
+    // console.log(response.payload.message);
 
     if (response.payload.token) {
       localStorage.setItem('token', response.payload.token);
@@ -65,7 +65,7 @@ const Login = () => {
         navigate('/');
       }
     }
-    console.log(logindata);
+    // console.log(logindata);
   };
 
   const handlevisiblity = () => {

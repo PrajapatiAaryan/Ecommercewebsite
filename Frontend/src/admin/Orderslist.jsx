@@ -24,7 +24,7 @@ const Orderslist = () => {
           const itemsWithDetails = await Promise.all(
             ord.items.map(async (item) => {
               const response = await axios.get(
-                `http://localhost:4000/product/detailproduct/${item.productId}`
+                `https://amart-wil3.onrender.com/product/detailproduct/${item.productId}`
               );
 
               return {
@@ -57,7 +57,7 @@ const Orderslist = () => {
     try {
       dispatch(updateorder({ orderId, newStatus }));
       dispatch(getallorders());
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error updating order status", error);
     }
@@ -68,7 +68,7 @@ const Orderslist = () => {
     try {
       dispatch(updatepayment({ orderId, newPaymentStatus }));
       dispatch(getallorders());
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error updating payment status", error);
     }

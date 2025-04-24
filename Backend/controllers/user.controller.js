@@ -139,7 +139,7 @@ const deleteaddress = async(req,res)=>{
 }
 const adduserprofileimg = async (req, res) => {
   const userId = req.user.id;
-  const image = req.file ? `http://localhost:4000/uploads/${req.file.filename}` : null;
+  const image = req.file ? `https://amart-wil3.onrender.com/uploads/${req.file.filename}` : null;
 
   try {
     const user = await Usermodel.findById(userId);
